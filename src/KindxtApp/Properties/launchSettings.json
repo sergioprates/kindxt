@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "KindxtApp": {
+      "commandName": "Project",
+      "commandLineArgs": "--sqlserver --recreate-cluster"
+    }
+  }
+}

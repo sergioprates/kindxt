@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32516.85
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B22AA833-7F49-4419-AD47-A9B9048A39FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KindxtApp", "src\KindxtApp\KindxtApp.csproj", "{C59A86A2-A9E8-47E0-B095-F7CC9D3188D7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C59A86A2-A9E8-47E0-B095-F7CC9D3188D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C59A86A2-A9E8-47E0-B095-F7CC9D3188D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C59A86A2-A9E8-47E0-B095-F7CC9D3188D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C59A86A2-A9E8-47E0-B095-F7CC9D3188D7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C59A86A2-A9E8-47E0-B095-F7CC9D3188D7} = {B22AA833-7F49-4419-AD47-A9B9048A39FA}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8917D197-3B11-4269-92CA-5019D2F39294}
+	EndGlobalSection
+EndGlobal

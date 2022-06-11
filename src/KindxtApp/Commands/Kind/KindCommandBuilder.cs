@@ -1,39 +1,29 @@
 ﻿using System.Text;
 using KindxtApp.Charts;
+using KindxtApp.Charts.Adminer;
+using KindxtApp.Charts.Postgres;
 using KindxtApp.Charts.SqlServer;
 using YamlDotNet.Serialization;
 
 namespace KindxtApp.Commands.Kind;
 public class KindCommandBuilder
 {
-    private readonly IDeserializer _deserializerYaml;
     private readonly ISerializer _serializerYaml;
     private readonly KindConfig _kindConfig;
-    private bool _recreateCluster = false;
+    private bool _createCluster = false;
     private readonly string command = "kind";
     private readonly List<IHelmChart> _charts;
 
     public KindCommandBuilder(IDeserializer deserializerYaml, ISerializer serializerYaml)
     {
-        _deserializerYaml = deserializerYaml;
         _serializerYaml = serializerYaml;
         _charts = new List<IHelmChart>();
-        _kindConfig = _deserializerYaml.Deserialize<KindConfig>(new StreamReader(Path.Combine("Commands", "Kind", "config.yaml")));
+        _kindConfig = deserializerYaml.Deserialize<KindConfig>(new StreamReader(Path.Combine("Commands", "Kind", "config.yaml")));
     }
 
-    public KindCommandBuilder WithSqlServer()
+    public KindCommandBuilder CreateCluster()
     {
-        _kindConfig
-            .GetNode()
-            .ExtraPortMappings
-            .Add(Ports.SqlServer);
-
-        _charts.Add(new SqlServerChartBuilder());
-        return this;
-    }
-    public KindCommandBuilder RecreateCluster()
-    {
-        _recreateCluster = true;
+        _createCluster = true;
         return this;
     }
 
@@ -49,12 +39,45 @@ public class KindCommandBuilder
         File.WriteAllText(Path.Combine(tmpDirectory, kindConfigFileName), configText, Encoding.UTF8);
 
         var kind = new ProcessWrapper(command);
-        if (_recreateCluster)
-            kind.ExecuteCommand("delete cluster");
-
-        kind.ExecuteCommand($"create cluster --config={kindConfigFileName} -v 1", tmpDirectory);
+        if (_createCluster)
+        {
+            kind
+            .ExecuteCommand("delete cluster", ignoreError: true)
+            .ExecuteCommand($"create cluster --config={kindConfigFileName} -v 1", tmpDirectory);
+        }
 
         foreach (var chart in _charts)
             chart.Install();
+    }
+
+    public KindCommandBuilder WithSqlServer()
+    {
+        _kindConfig
+            .GetNode()
+            .ExtraPortMappings
+            .Add(Ports.SqlServer);
+
+        _charts.Add(new SqlServerChart());
+        return this;
+    }
+    public KindCommandBuilder WithPostgres()
+    {
+        _kindConfig
+            .GetNode()
+            .ExtraPortMappings
+            .Add(Ports.Postgres);
+
+        _charts.Add(new PostgresChart());
+        return this;
+    }
+    public KindCommandBuilder WithAdminer()
+    {
+        _kindConfig
+            .GetNode()
+            .ExtraPortMappings
+            .Add(Ports.Adminer);
+
+        _charts.Add(new AdminerChart());
+        return this;
     }
 }

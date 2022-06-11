@@ -16,7 +16,7 @@ var kindCommandBuilder = new KindCommandBuilder(deserializer, serializer);
 
 var rootCommand = new RootCommand("Kindxt is a extension from kind");
 
-var recreateKindOption = new Option<bool>(new[] { "--recreate-cluster", "-r" }, "Delete the cluster and create a new one")
+var createClusterOption = new Option<bool>(new[] { "--create-cluster", "-c" }, "Delete the cluster and create a new one")
 {
     IsRequired = false,
     Arity = ArgumentArity.Zero
@@ -26,23 +26,40 @@ var sqlServerOption = new Option<bool>(new[] { "--sqlserver", "-sql" }, "Install
     IsRequired = false,
     Arity = ArgumentArity.Zero
 };
-rootCommand.SetHandler<bool, bool, InvocationContext>((recreateCluster,
+var postgresOption = new Option<bool>(new[] { "--postgres", "-pssql" }, "Install postgres chart on kind")
+{
+    IsRequired = false,
+    Arity = ArgumentArity.Zero
+};
+var adminerOption = new Option<bool>(new[] { "--adminer", "-pssql-admin" }, "Install adminer chart on kind")
+{
+    IsRequired = false,
+    Arity = ArgumentArity.Zero
+};
+rootCommand.SetHandler<bool, bool, bool, bool, InvocationContext>((createCluster,
     installSqlServer,
+    installPostgres,
+    installAdminer,
     ctx) =>
 {
-    if (recreateCluster)
-        kindCommandBuilder.RecreateCluster();
+    if (createCluster)
+        kindCommandBuilder.CreateCluster();
     if (installSqlServer)
         kindCommandBuilder.WithSqlServer();
-}, recreateKindOption, sqlServerOption);
+    if (installPostgres)
+        kindCommandBuilder.WithPostgres();
+    if (installAdminer)
+        kindCommandBuilder.WithAdminer();
+}, createClusterOption, sqlServerOption, postgresOption, adminerOption);
 
-rootCommand.AddOption(recreateKindOption);
+rootCommand.AddOption(createClusterOption);
 rootCommand.AddOption(sqlServerOption);
+rootCommand.AddOption(postgresOption);
+rootCommand.AddOption(adminerOption);
 
 var commandBuilder = new CommandLineBuilder(rootCommand).UseDefaults();
 
-
-var migrationCommand = commandBuilder.Build();
-await migrationCommand.InvokeAsync(args);
+var command = commandBuilder.Build();
+await command.InvokeAsync(args);
 
 kindCommandBuilder.Build();

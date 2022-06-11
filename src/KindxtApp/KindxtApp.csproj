@@ -13,7 +13,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="Charts\Adminer\config.yaml">
+	  <None Update="Charts\NginxIngress\config.yaml">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Charts\PgAdmin\config.yaml">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="Charts\Postgres\config.yaml">

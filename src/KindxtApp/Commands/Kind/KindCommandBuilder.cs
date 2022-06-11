@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using KindxtApp.Charts;
 using KindxtApp.Charts.Adminer;
+using KindxtApp.Charts.NginxIngress;
 using KindxtApp.Charts.Postgres;
 using KindxtApp.Charts.SqlServer;
 using YamlDotNet.Serialization;
@@ -70,14 +71,24 @@ public class KindCommandBuilder
         _charts.Add(new PostgresChart());
         return this;
     }
-    public KindCommandBuilder WithAdminer()
+    public KindCommandBuilder WithPgAdmin()
     {
         _kindConfig
             .GetNode()
             .ExtraPortMappings
-            .Add(Ports.Adminer);
+            .Add(Ports.PgAdmin);
 
-        _charts.Add(new AdminerChart());
+        _charts.Add(new PgAdminChart());
+        return this;
+    }
+    public KindCommandBuilder WithNginxIngress()
+    {
+        _kindConfig
+            .GetNode()
+            .ExtraPortMappings
+            .Add(Ports.NginxIngress);
+
+        _charts.Add(new NginxIngressChart());
         return this;
     }
 }

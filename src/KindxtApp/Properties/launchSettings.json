@@ -2,7 +2,7 @@
   "profiles": {
     "KindxtApp": {
       "commandName": "Project",
-      "commandLineArgs": "--create-cluster --postgres --adminer"
+      "commandLineArgs": "--create-cluster --nginx-ingress"
     }
   }
 }

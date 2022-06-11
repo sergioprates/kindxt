@@ -1,0 +1,7 @@
+controller:
+    config:
+        enable-underscores-in-headers: true
+    service:
+        type: NodePort
+        nodePorts:
+            http: 30003

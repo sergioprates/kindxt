@@ -1,0 +1,7 @@
+service:
+    type: NodePort
+    nodePort: 30002
+
+env:
+    email: desenv@local.com
+    password: P@ssword123

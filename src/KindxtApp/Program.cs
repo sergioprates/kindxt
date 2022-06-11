@@ -31,15 +31,21 @@ var postgresOption = new Option<bool>(new[] { "--postgres", "-pssql" }, "Install
     IsRequired = false,
     Arity = ArgumentArity.Zero
 };
-var adminerOption = new Option<bool>(new[] { "--adminer", "-pssql-admin" }, "Install adminer chart on kind")
+var pgAdminOption = new Option<bool>(new[] { "--pgAdmin", "-pssql-admin" }, "Install pgadmin chart on kind")
 {
     IsRequired = false,
     Arity = ArgumentArity.Zero
 };
-rootCommand.SetHandler<bool, bool, bool, bool, InvocationContext>((createCluster,
+var nginxIngressOption = new Option<bool>(new[] { "--nginx-ingress", "-nginx" }, "Install nginx-ingress chart on kind")
+{
+    IsRequired = false,
+    Arity = ArgumentArity.Zero
+};
+rootCommand.SetHandler<bool, bool, bool, bool, bool, InvocationContext>((createCluster,
     installSqlServer,
     installPostgres,
-    installAdminer,
+    installPgAdmin,
+    installNginxIngress,
     ctx) =>
 {
     if (createCluster)
@@ -48,14 +54,17 @@ rootCommand.SetHandler<bool, bool, bool, bool, InvocationContext>((createCluster
         kindCommandBuilder.WithSqlServer();
     if (installPostgres)
         kindCommandBuilder.WithPostgres();
-    if (installAdminer)
-        kindCommandBuilder.WithAdminer();
-}, createClusterOption, sqlServerOption, postgresOption, adminerOption);
+    if (installPgAdmin)
+        kindCommandBuilder.WithPgAdmin();
+    if (installNginxIngress)
+        kindCommandBuilder.WithNginxIngress();
+}, createClusterOption, sqlServerOption, postgresOption, pgAdminOption, nginxIngressOption);
 
 rootCommand.AddOption(createClusterOption);
 rootCommand.AddOption(sqlServerOption);
 rootCommand.AddOption(postgresOption);
-rootCommand.AddOption(adminerOption);
+rootCommand.AddOption(pgAdminOption);
+rootCommand.AddOption(nginxIngressOption);
 
 var commandBuilder = new CommandLineBuilder(rootCommand).UseDefaults();
 

@@ -45,5 +45,4 @@ var commandBuilder = new CommandLineBuilder(rootCommand).UseDefaults();
 var migrationCommand = commandBuilder.Build();
 await migrationCommand.InvokeAsync(args);
 
-var process = kindCommandBuilder.Build();
-Console.WriteLine(process.ReadOutput());
+kindCommandBuilder.Build();

@@ -37,7 +37,7 @@ public class KindCommandBuilder
         return this;
     }
 
-    public ProcessWrapper Build()
+    public void Build()
     {
         var kindConfigFileName = "kind-config.yaml";
         var tmpDirectory = Path.Combine("tmp", "kind");
@@ -48,15 +48,13 @@ public class KindCommandBuilder
         var configText = _serializerYaml.Serialize(_kindConfig);
         File.WriteAllText(Path.Combine(tmpDirectory, kindConfigFileName), configText, Encoding.UTF8);
 
+        var kind = new ProcessWrapper(command);
         if (_recreateCluster)
-            new ProcessWrapper(command, "delete cluster").ExecuteCommand();
+            kind.ExecuteCommand("delete cluster");
 
-        var process = new ProcessWrapper(command, $"create cluster --config={kindConfigFileName} -v 1")
-            .ExecuteCommand(tmpDirectory);
+        kind.ExecuteCommand($"create cluster --config={kindConfigFileName} -v 1", tmpDirectory);
 
         foreach (var chart in _charts)
             chart.Install();
-
-        return process;
     }
 }

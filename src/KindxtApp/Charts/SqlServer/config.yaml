@@ -1,17 +1,20 @@
-  image:
-    repository: mcr.microsoft.com/mssql/server
-    tag: 2019-GA-ubuntu-16.04
-  sapassword: P@ssword123
-  edition:
-    value: Developer
-  acceptEula:
-    value: 'y'
-  persistence:
-    enabled: false
-  resources:
-    limits:
-      cpu: 2
-      memory: 2Gi
-    requests:
-      cpu: 0.5
-      memory: 1.5Gi
+service:
+    type: NodePort
+    nodePort: 30000
+image:
+  repository: mcr.microsoft.com/mssql/server
+  tag: 2019-GA-ubuntu-16.04
+sapassword: P@ssword123
+edition:
+  value: Developer
+acceptEula:
+  value: 'y'
+persistence:
+  enabled: false
+resources:
+  limits:
+    cpu: 2
+    memory: 2Gi
+  requests:
+    cpu: 0.5
+    memory: 1.5Gi

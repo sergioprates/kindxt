@@ -5,20 +5,18 @@ namespace KindxtApp;
 public class ProcessWrapper
 {
     private readonly string _file;
-    private readonly string _arguments;
-    private Process _process;
+    private Process? _process;
 
-    public ProcessWrapper(string file, string arguments = "")
+    public ProcessWrapper(string file)
     {
         _file = file;
-        _arguments = arguments;
     }
-    public ProcessWrapper ExecuteCommand(string workingDirectory = "", bool ignoreError = false)
+    public ProcessWrapper ExecuteCommand(string arguments, string workingDirectory = "", bool ignoreError = false)
     {
         var processStartInfo = new ProcessStartInfo
         {
             FileName = FindExecutable(_file),
-            Arguments = _arguments,
+            Arguments = arguments,
             UseShellExecute = false,
             WorkingDirectory = workingDirectory,
             WindowStyle = ProcessWindowStyle.Hidden,
@@ -28,30 +26,30 @@ public class ProcessWrapper
         var process = Process.Start(processStartInfo);
 
         if (process == null)
-            throw new Exception($"The process failed to start: {_file} {_arguments}");
+            throw new Exception($"The process failed to start: {_file} {arguments}");
 
         process.WaitForExit();
         _process = process;
 
         if (process.ExitCode != 0 && ignoreError == false)
-            throw new Exception($"The process failed to start: {_file} {_arguments}");
+            throw new Exception($"The process failed to start: {_file} {arguments}. Verify if your docker is running.");
 
         return this;
 
     }
 
-    public string ReadOutput()
+    public string? ReadOutput()
     {
-        return _process.StandardOutput.ReadToEnd();
+        return _process?.StandardOutput.ReadToEnd();
     }
 
-    public ProcessWrapper StartProccess(string workingDirectory,
+    public ProcessWrapper StartProccess(string arguments, string workingDirectory,
         bool useShell = true)
     {
         var processStartInfo = new ProcessStartInfo
         {
             FileName = FindExecutable(_file),
-            Arguments = _arguments,
+            Arguments = arguments,
             UseShellExecute = useShell,
             WorkingDirectory = workingDirectory,
             WindowStyle = ProcessWindowStyle.Hidden
@@ -113,7 +111,7 @@ public class ProcessWrapper
             }))
         {
             var exited = idGetter != null && idGetter.WaitForExit(2000);
-            if (exited && idGetter.ExitCode == 0)
+            if (exited && idGetter!.ExitCode == 0)
             {
                 var stdout = idGetter.StandardOutput.ReadToEnd();
 

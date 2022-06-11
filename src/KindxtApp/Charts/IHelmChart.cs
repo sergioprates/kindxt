@@ -2,6 +2,6 @@
 {
     public interface IHelmChart
     {
-        ProcessWrapper Install();
+        void Install();
     }
 }

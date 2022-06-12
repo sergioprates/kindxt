@@ -1,6 +1,4 @@
-﻿using KindxtApp.Commands.Kind;
-
-namespace KindxtApp.Commands
+﻿namespace KindxtApp.Kind
 {
     public static class Ports
     {

@@ -1,13 +1,14 @@
-﻿using System.Text;
-using KindxtApp.Charts;
+﻿using KindxtApp.Charts;
 using KindxtApp.Charts.Adminer;
 using KindxtApp.Charts.NginxIngress;
 using KindxtApp.Charts.Postgres;
 using KindxtApp.Charts.SqlServer;
+using System.Text;
 using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
 
-namespace KindxtApp.Commands.Kind;
-public class KindCommandBuilder
+namespace KindxtApp.Kind;
+public class KindClusterBuilder
 {
     private readonly ISerializer _serializerYaml;
     private readonly KindConfig _kindConfig;
@@ -15,14 +16,19 @@ public class KindCommandBuilder
     private readonly string command = "kind";
     private readonly List<IHelmChart> _charts;
 
-    public KindCommandBuilder(IDeserializer deserializerYaml, ISerializer serializerYaml)
+    public KindClusterBuilder()
     {
-        _serializerYaml = serializerYaml;
+        var deserializerYaml = new DeserializerBuilder()
+            .WithNamingConvention(CamelCaseNamingConvention.Instance)
+            .Build();
+        _serializerYaml = new SerializerBuilder()
+            .WithNamingConvention(CamelCaseNamingConvention.Instance)
+            .Build();
         _charts = new List<IHelmChart>();
-        _kindConfig = deserializerYaml.Deserialize<KindConfig>(new StreamReader(Path.Combine("Commands", "Kind", "config.yaml")));
+        _kindConfig = deserializerYaml.Deserialize<KindConfig>(new StreamReader(Path.Combine("Kind", "config.yaml")));
     }
 
-    public KindCommandBuilder CreateCluster()
+    public KindClusterBuilder CreateCluster()
     {
         _createCluster = true;
         return this;
@@ -51,7 +57,7 @@ public class KindCommandBuilder
             chart.Install();
     }
 
-    public KindCommandBuilder WithSqlServer()
+    public KindClusterBuilder WithSqlServer()
     {
         _kindConfig
             .GetNode()
@@ -61,7 +67,7 @@ public class KindCommandBuilder
         _charts.Add(new SqlServerChart());
         return this;
     }
-    public KindCommandBuilder WithPostgres()
+    public KindClusterBuilder WithPostgres()
     {
         _kindConfig
             .GetNode()
@@ -71,7 +77,7 @@ public class KindCommandBuilder
         _charts.Add(new PostgresChart());
         return this;
     }
-    public KindCommandBuilder WithPgAdmin()
+    public KindClusterBuilder WithPgAdmin()
     {
         _kindConfig
             .GetNode()
@@ -81,7 +87,7 @@ public class KindCommandBuilder
         _charts.Add(new PgAdminChart());
         return this;
     }
-    public KindCommandBuilder WithNginxIngress()
+    public KindClusterBuilder WithNginxIngress()
     {
         _kindConfig
             .GetNode()

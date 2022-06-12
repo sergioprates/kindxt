@@ -1,4 +1,4 @@
-﻿namespace KindxtApp.Commands.Kind
+﻿namespace KindxtApp.Kind
 {
     public class KindConfig
     {

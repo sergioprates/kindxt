@@ -25,7 +25,7 @@
 	  <None Update="Charts\SqlServer\config.yaml">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Commands\Kind\config.yaml">
+	  <None Update="Kind\config.yaml">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>

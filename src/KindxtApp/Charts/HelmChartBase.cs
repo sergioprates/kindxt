@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace KindxtApp.Charts
+﻿namespace Kindxt.Charts
 {
     public abstract class HelmChartBase
     {
@@ -18,7 +12,8 @@ namespace KindxtApp.Charts
                 .ExecuteCommand($"repo add {repoName} {repoUrl}", ignoreError: true)
                 .ExecuteCommand("repo update", ignoreError: true)
                 .ExecuteCommand($"uninstall {releaseName}", ignoreError: true)
-                .ExecuteCommand($"install {releaseName} {chartName} --wait --timeout=3m -f config.yaml", configDirectory);
+                .ExecuteCommand($"install {releaseName} {chartName} --wait --timeout=3m -f config.yaml", 
+                    Path.Combine(Path.GetDirectoryName(Environment.ProcessPath!)!, configDirectory));
         }
     }
 }

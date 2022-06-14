@@ -5,7 +5,7 @@ VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B22AA833-7F49-4419-AD47-A9B9048A39FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KindxtApp", "src\KindxtApp\KindxtApp.csproj", "{C59A86A2-A9E8-47E0-B095-F7CC9D3188D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kindxt", "src\KindxtApp\Kindxt.csproj", "{C59A86A2-A9E8-47E0-B095-F7CC9D3188D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

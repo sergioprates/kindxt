@@ -1,5 +1,5 @@
-﻿using KindxtApp;
-using KindxtApp.Kind;
+﻿using Kindxt;
+using Kindxt.Kind;
 using System.CommandLine;
 using System.CommandLine.Builder;
 using System.CommandLine.Parsing;

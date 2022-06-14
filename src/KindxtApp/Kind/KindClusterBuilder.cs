@@ -1,13 +1,13 @@
-﻿using KindxtApp.Charts;
-using KindxtApp.Charts.Adminer;
-using KindxtApp.Charts.NginxIngress;
-using KindxtApp.Charts.Postgres;
-using KindxtApp.Charts.SqlServer;
-using System.Text;
+﻿using System.Text;
+using Kindxt.Charts;
+using Kindxt.Charts.Adminer;
+using Kindxt.Charts.NginxIngress;
+using Kindxt.Charts.Postgres;
+using Kindxt.Charts.SqlServer;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-namespace KindxtApp.Kind;
+namespace Kindxt.Kind;
 public class KindClusterBuilder
 {
     private readonly ISerializer _serializerYaml;
@@ -25,7 +25,8 @@ public class KindClusterBuilder
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .Build();
         _charts = new List<IHelmChart>();
-        _kindConfig = deserializerYaml.Deserialize<KindConfig>(new StreamReader(Path.Combine("Kind", "config.yaml")));
+        _kindConfig = deserializerYaml.Deserialize<KindConfig>(
+            new StreamReader(Path.Combine(Path.GetDirectoryName(Environment.ProcessPath!)!, "Kind", "config.yaml")));
     }
 
     public KindClusterBuilder CreateCluster()

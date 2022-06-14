@@ -1,4 +1,4 @@
-﻿namespace KindxtApp.Charts.SqlServer;
+﻿namespace Kindxt.Charts.SqlServer;
 public class SqlServerChart : HelmChartBase, IHelmChart
 {
     public void Install()

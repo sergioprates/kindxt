@@ -1,4 +1,4 @@
-﻿namespace KindxtApp.Charts.Adminer
+﻿namespace Kindxt.Charts.Adminer
 {
     public class PgAdminChart : HelmChartBase, IHelmChart
     {

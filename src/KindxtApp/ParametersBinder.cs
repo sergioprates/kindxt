@@ -1,7 +1,7 @@
 ﻿using System.CommandLine;
 using System.CommandLine.Binding;
 
-namespace KindxtApp
+namespace Kindxt
 {
     public class ParametersBinder : BinderBase<KindxtParameters>
     {

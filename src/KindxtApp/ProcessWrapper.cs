@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace KindxtApp;
+namespace Kindxt;
 public class ProcessWrapper
 {
     private readonly string _file;

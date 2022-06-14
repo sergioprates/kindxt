@@ -1,4 +1,4 @@
-﻿namespace KindxtApp.Kind
+﻿namespace Kindxt.Kind
 {
     public class KindConfig
     {
@@ -39,6 +39,6 @@
     {
         public int ContainerPort { get; set; }
         public int HostPort { get; set; }
-        public string Protocol => "TCP";
+        public string Protocol { get; set; }
     }
 }

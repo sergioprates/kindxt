@@ -1,4 +1,4 @@
-﻿namespace KindxtApp.Charts
+﻿namespace Kindxt.Charts
 {
     public interface IHelmChart
     {

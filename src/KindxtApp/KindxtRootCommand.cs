@@ -1,8 +1,8 @@
-﻿using KindxtApp.Kind;
-using System.CommandLine;
+﻿using System.CommandLine;
 using System.CommandLine.Invocation;
+using Kindxt.Kind;
 
-namespace KindxtApp
+namespace Kindxt
 {
     public class KindxtRootCommand : RootCommand
     {

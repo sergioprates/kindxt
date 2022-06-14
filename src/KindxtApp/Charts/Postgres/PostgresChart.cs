@@ -1,4 +1,4 @@
-﻿namespace KindxtApp.Charts.Postgres
+﻿namespace Kindxt.Charts.Postgres
 {
     public class PostgresChart : HelmChartBase, IHelmChart
     {

@@ -1,4 +1,4 @@
-﻿namespace KindxtApp.Charts.NginxIngress
+﻿namespace Kindxt.Charts.NginxIngress
 {
     public class NginxIngressChart : HelmChartBase, IHelmChart
     {

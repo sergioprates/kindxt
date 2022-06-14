@@ -1,0 +1,61 @@
+name: .NET
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Fetch unshallow
+      run: git fetch --prune --tags --unshallow
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0.9.7
+      with:
+        versionSpec: '5.x'
+    - name: Determine Version
+      id:   gitversion
+      uses: gittools/actions/gitversion/execute@v0.9.7
+    - name: Build
+      run: dotnet build /p:AssemblyVersion="$GitVersion_AssemblySemVer" /p:Version="1.2.0" --no-restore
+    - name: Publish
+      run: |
+        dotnet publish src/KindxtApp/Kindxt.csproj -c Release --self-contained true /p:AssemblyVersion="$GitVersion_AssemblySemVer" /p:Version="1.2.0" -r win-x64 -o publish
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2.2.2
+      with:
+        name: kindxt-windows-${{ steps.gitversion.outputs.semVer }}
+        path: publish/**
+        if-no-files-found: error
+    # - name: release
+    #   uses: actions/create-release@v1
+    #   id: create_release
+    #   with:
+    #     draft: false
+    #     prerelease: false
+    #     release_name: ${{ steps.version.outputs.version }}
+    #     tag_name: ${{ github.ref }}
+    #     body_path: CHANGELOG.md
+    #   env:
+    #     GITHUB_TOKEN: ${{ github.token }}
+    # - name: Upload release windows
+    #   uses: actions/upload-release-asset@v1
+    #   env:
+    #     GITHUB_TOKEN: ${{ github.token }}
+    #   with:
+    #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #     asset_path: publish/**
+    #     asset_name: kindxt.windows.zip
+    #     asset_content_type: application/zip

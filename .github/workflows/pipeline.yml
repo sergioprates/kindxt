@@ -43,7 +43,7 @@ jobs:
         path: kindxt-windows-${{ steps.gitversion.outputs.semVer }}.zip
         if-no-files-found: error
     
-  deploy:
+  teste:
     runs-on: ubuntu-latest
     needs: build
 

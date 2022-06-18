@@ -63,3 +63,4 @@ jobs:
         asset_path: kindxt-windows-${{ steps.gitversion.outputs.semVer }}.zip
         asset_name: kindxt-windows-${{ steps.gitversion.outputs.semVer }}.zip
         asset_content_type: application/zip
+        

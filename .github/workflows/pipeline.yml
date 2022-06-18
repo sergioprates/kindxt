@@ -2,9 +2,9 @@ name: .NET
 
 on:
   push:
-    branches: [ main, release/** ]
+    branches: [ main, release/**, develop ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop, release ]
 
 jobs:
   build:
@@ -43,6 +43,17 @@ jobs:
         path: kindxt-windows-${{ steps.gitversion.outputs.semVer }}.zip
         if-no-files-found: error
     
+  deploy:
+
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+       - name: 'Download artifact'
+         uses: actions/download-artifact@v2
+         with:
+          name: kindxt-windows-${{ jobs.build.steps.gitversion.outputs.semVer }}
+          path: ${{ runner.temp }}
     - name: release
       uses: actions/create-release@v1
       id: create_release
@@ -60,6 +71,6 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: kindxt-windows-${{ steps.gitversion.outputs.semVer }}.zip
+        asset_path: ${{ runner.temp }}/kindxt-windows-${{ steps.gitversion.outputs.semVer }}.zip
         asset_name: kindxt-windows-${{ steps.gitversion.outputs.semVer }}.zip
         asset_content_type: application/zip

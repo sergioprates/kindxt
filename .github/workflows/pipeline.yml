@@ -11,6 +11,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    outputs:
+      semVer: ${{ steps.set_semver.outputs.semVer }}
+
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
@@ -28,6 +31,9 @@ jobs:
     - name: Determine Version
       id:   gitversion
       uses: gittools/actions/gitversion/execute@v0.9.7
+    - name: Output semver
+      id: set_semver
+      run: echo "::set-output name=semVer::$GitVersion_SemVer"
     - name: Build
       run: dotnet build --no-restore
     - name: Publish
@@ -51,7 +57,7 @@ jobs:
     - name: 'Download artifact'
       uses: actions/download-artifact@v2
       with:
-        name: kindxt-windows-${{ jobs.build.steps.gitversion.outputs.semVer }}
+        name: kindxt-windows-${{ needs.build.outputs.semVer }}
         path: ${{ runner.temp }}
     - name: release
       uses: actions/create-release@v1
@@ -59,7 +65,7 @@ jobs:
       with:
         draft: false
         prerelease: false
-        release_name: kindxt-${{ steps.gitversion.outputs.semVer }}
+        release_name: kindxt-${{ needs.build.outputs.semVer }}
         tag_name: ${{ steps.gitversion.outputs.semVer }}
         body_path: CHANGELOG.md
       env:
@@ -70,6 +76,6 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ runner.temp }}/kindxt-windows-${{ steps.gitversion.outputs.semVer }}.zip
-        asset_name: kindxt-windows-${{ steps.gitversion.outputs.semVer }}.zip
+        asset_path: ${{ runner.temp }}/kindxt-windows-${{ needs.build.outputs.semVer }}.zip
+        asset_name: kindxt-windows-${{ needs.build.outputs.semVer }}.zip
         asset_content_type: application/zip

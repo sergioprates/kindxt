@@ -40,7 +40,7 @@ jobs:
       uses: actions/upload-artifact@v2.2.2
       with:
         name: kindxt-windows-${{ steps.gitversion.outputs.semVer }}
-        path: kindxt-windows-${{ steps.gitversion.outputs.semVer }}
+        path: kindxt-windows-${{ steps.gitversion.outputs.semVer }}.zip
         if-no-files-found: error
     
     - name: release

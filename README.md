@@ -1,6 +1,7 @@
 # kindxt
 
 [![Build](https://github.com/sergioprates/kindxt/actions/workflows/pipeline.yml/badge.svg)](https://github.com/sergioprates/kindxt/actions/workflows/pipeline.yml)
+
 Kindxt is a wrapper for kind to easyly install common applications on kind. This is only for local environments and consider some convetions for configurations.
 
 When I was configuring kind with some applications, I feel some pain to organize all applications that I need because kind on windows ask us to configure the port maps between host and container. It's easy to do if you has only one application and only need to do this once. I needed to make this in various situations and I'm tired to do this. So I created this wrapper to do this configuration with the command line and I don't have to worry about conflicts on the kind node ports because the configuration will stay centralized and can be shared between projects.

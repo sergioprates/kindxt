@@ -10,6 +10,9 @@ var kindClusterBuilder = new KindClusterBuilder();
 
 kindxtCommand.RegisterHandler(kindClusterBuilder);
 
+if (args.Length == 0)
+    args = new string[] { "--help" };
+
 await new CommandLineBuilder(kindxtCommand)
     .UseDefaults()
     .Build()

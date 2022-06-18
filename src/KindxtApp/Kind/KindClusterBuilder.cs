@@ -4,6 +4,7 @@ using Kindxt.Charts.Adminer;
 using Kindxt.Charts.NginxIngress;
 using Kindxt.Charts.Postgres;
 using Kindxt.Charts.SqlServer;
+using Kindxt.Extensions;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -26,7 +27,7 @@ public class KindClusterBuilder
             .Build();
         _charts = new List<IHelmChart>();
         _kindConfig = deserializerYaml.Deserialize<KindConfig>(
-            new StreamReader(Path.Combine(Path.GetDirectoryName(Environment.ProcessPath!)!, "Kind", "config.yaml")));
+            new StreamReader(Path.Combine(KindxtPath.GetProcessPath(), "Kind", "config.yaml")));
     }
 
     public KindClusterBuilder CreateCluster()
@@ -38,7 +39,7 @@ public class KindClusterBuilder
     public void Build()
     {
         var kindConfigFileName = "kind-config.yaml";
-        var tmpDirectory = Path.Combine("tmp", "kind");
+        var tmpDirectory = Path.Combine(KindxtPath.GetProcessPath(), "tmp", "kind");
 
         if (!Directory.Exists(tmpDirectory))
             Directory.CreateDirectory(tmpDirectory);

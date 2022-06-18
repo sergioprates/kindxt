@@ -67,7 +67,7 @@ jobs:
       id: create_release
       with:
         draft: false
-        prerelease:  ${{ env.branch =! 'main' }}
+        prerelease:  env.branch =! 'main'
         release_name: kindxt-${{ needs.build.outputs.semVer }}
         tag_name: v${{ needs.build.outputs.semVer }}
         body_path: CHANGELOG.md

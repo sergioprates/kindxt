@@ -2,14 +2,17 @@ name: .NET
 
 on:
   push:
-    branches: [ main, release/** ]
+    branches: [ main, develop, release/** ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, develop, release/** ]
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
+
+    outputs:
+      semVer: ${{ steps.set_semver.outputs.semVer }}
 
     steps:
     - uses: actions/checkout@v2
@@ -28,6 +31,9 @@ jobs:
     - name: Determine Version
       id:   gitversion
       uses: gittools/actions/gitversion/execute@v0.9.7
+    - name: Output semver
+      id: set_semver
+      run: echo "::set-output name=semVer::$GitVersion_SemVer"
     - name: Build
       run: dotnet build --no-restore
     - name: Publish
@@ -42,15 +48,29 @@ jobs:
         name: kindxt-windows-${{ steps.gitversion.outputs.semVer }}
         path: kindxt-windows-${{ steps.gitversion.outputs.semVer }}.zip
         if-no-files-found: error
-    
+
+  release:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    needs: build
+    env:
+      branch: ${{ github.head_ref || github.ref_name }} 
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: 'Download artifact'
+      uses: actions/download-artifact@v2
+      with:
+        name: kindxt-windows-${{ needs.build.outputs.semVer }}
+        path: ${{ runner.temp }}
     - name: release
       uses: actions/create-release@v1
       id: create_release
       with:
         draft: false
-        prerelease: false
-        release_name: kindxt-${{ steps.gitversion.outputs.semVer }}
-        tag_name: ${{ steps.gitversion.outputs.semVer }}
+        prerelease:  ${{ env.branch != 'main' }}
+        release_name: kindxt-${{ needs.build.outputs.semVer }}
+        tag_name: v${{ needs.build.outputs.semVer }}
         body_path: CHANGELOG.md
       env:
         GITHUB_TOKEN: ${{ github.token }}
@@ -60,6 +80,6 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: kindxt-windows-${{ steps.gitversion.outputs.semVer }}.zip
-        asset_name: kindxt-windows-${{ steps.gitversion.outputs.semVer }}.zip
+        asset_path: ${{ runner.temp }}/kindxt-windows-${{ needs.build.outputs.semVer }}.zip
+        asset_name: kindxt-windows-${{ needs.build.outputs.semVer }}.zip
         asset_content_type: application/zip

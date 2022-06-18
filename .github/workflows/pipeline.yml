@@ -33,9 +33,9 @@ jobs:
     - name: Publish
       run: |
         dotnet publish src/KindxtApp/Kindxt.csproj -c Release --self-contained true /p:AssemblyVersion="$GitVersion_AssemblySemVer" /p:Version="$GitVersion_SemVer" -r win-x64 -o publish
-    - name: Zip Content
-      run: |
-        zip --junk-paths kindxt-windows-${{ steps.gitversion.outputs.semVer }} publish
+    - uses: montudor/action-zip@v1
+      with:
+        args: zip -qq -r kindxt-windows-${{ steps.gitversion.outputs.semVer }}.zip publish/**
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.2
       with:
@@ -63,4 +63,3 @@ jobs:
         asset_path: kindxt-windows-${{ steps.gitversion.outputs.semVer }}.zip
         asset_name: kindxt-windows-${{ steps.gitversion.outputs.semVer }}.zip
         asset_content_type: application/zip
-        

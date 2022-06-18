@@ -42,17 +42,17 @@ jobs:
         name: kindxt-windows-${{ steps.gitversion.outputs.semVer }}
         path: kindxt-windows-${{ steps.gitversion.outputs.semVer }}.zip
         if-no-files-found: error
-    
-  teste:
+
+  release:
     runs-on: ubuntu-latest
     needs: build
 
     steps:
-       - name: 'Download artifact'
-         uses: actions/download-artifact@v2
-         with:
-          name: kindxt-windows-${{ jobs.build.steps.gitversion.outputs.semVer }}
-          path: ${{ runner.temp }}
+    - name: 'Download artifact'
+      uses: actions/download-artifact@v2
+      with:
+      name: kindxt-windows-${{ jobs.build.steps.gitversion.outputs.semVer }}
+      path: ${{ runner.temp }}
     - name: release
       uses: actions/create-release@v1
       id: create_release

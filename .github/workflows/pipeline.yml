@@ -66,7 +66,7 @@ jobs:
         draft: false
         prerelease: false
         release_name: kindxt-${{ needs.build.outputs.semVer }}
-        tag_name: ${{ steps.gitversion.outputs.semVer }}
+        tag_name: ${{ needs.build.outputs.semVer }}
         body_path: CHANGELOG.md
       env:
         GITHUB_TOKEN: ${{ github.token }}

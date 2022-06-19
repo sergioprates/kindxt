@@ -8,7 +8,7 @@ When I was configuring kind with some applications, I feel some pain to organize
 
 ## Getting Started
 
-1. Download the kindxt from releases on github
+1. Download the kindxt from [releases on github](https://github.com/sergioprates/kindxt/releases).
 2. Put the executable on PATH environment variable
 3. Run kindxt --help to see all options
 

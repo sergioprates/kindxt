@@ -4,12 +4,15 @@ on:
   push:
     branches: [ main, develop, release/** ]
   pull_request:
-    branches: [ main, develop, release/** ]
+    branches: [ main, develop ]
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
+
+    env:
+      branch: ${{ github.head_ref || github.ref_name }} 
 
     outputs:
       semVer: ${{ steps.set_semver.outputs.semVer }}
@@ -20,10 +23,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
-    - name: Fetch unshallow
-      run: git fetch --prune --tags --unshallow
     - name: Restore dependencies
       run: dotnet restore
+    - name: Fetch unshallow
+      run: git fetch --prune --tags --unshallow
     - name: Install GitVersion 
       uses: gittools/actions/gitversion/setup@v0.9.7
       with:
@@ -33,20 +36,26 @@ jobs:
       uses: gittools/actions/gitversion/execute@v0.9.7
     - name: Output semver
       id: set_semver
-      run: echo "::set-output name=semVer::$GitVersion_SemVer"
+      run: |
+        if [[ ${{ env.branch }} == 'main' ]];
+        then
+          echo "::set-output name=semVer::$GitVersion_MajorMinorPatch"
+        else
+          echo "::set-output name=semVer::$GitVersion_SemVer"
+        fi
     - name: Build
       run: dotnet build --no-restore
     - name: Publish
       run: |
-        dotnet publish src/KindxtApp/Kindxt.csproj -c Release --self-contained true /p:PublishSingleFile=true /p:AssemblyVersion="$GitVersion_AssemblySemVer" /p:Version="$GitVersion_SemVer" -r win-x64 -o publish
+        dotnet publish src/KindxtApp/Kindxt.csproj -c Release --self-contained true /p:PublishSingleFile=true /p:AssemblyVersion="$GitVersion_AssemblySemVer" /p:Version="${{ steps.set_semver.outputs.semVer }}" /p:AssemblyFileVersion="$GitVersion_AssemblySemFileVer"  /p:AssemblyInformationalVersion="$GitVersion_InformationalVersion" -r win-x64 -o publish
     - name: Zip Content
       run: |
-        zip -r kindxt-windows-${{ steps.gitversion.outputs.semVer }}.zip publish
+        zip -r kindxt-windows-${{ steps.set_semver.outputs.semVer }}.zip publish
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.2
       with:
-        name: kindxt-windows-${{ steps.gitversion.outputs.semVer }}
-        path: kindxt-windows-${{ steps.gitversion.outputs.semVer }}.zip
+        name: kindxt-windows-${{ steps.set_semver.outputs.semVer }}
+        path: kindxt-windows-${{ steps.set_semver.outputs.semVer }}.zip
         if-no-files-found: error
 
   release:
@@ -55,13 +64,15 @@ jobs:
     needs: build
     env:
       branch: ${{ github.head_ref || github.ref_name }} 
+      version: ${{ needs.build.outputs.semVer }}
+      windows_package_name: 'kindxt-windows-${{ needs.build.outputs.semVer }}'
 
     steps:
     - uses: actions/checkout@v2
-    - name: 'Download artifact'
+    - name: 'Download windows artifact'
       uses: actions/download-artifact@v2
       with:
-        name: kindxt-windows-${{ needs.build.outputs.semVer }}
+        name: ${{ env.windows_package_name }}
         path: ${{ runner.temp }}
     - name: release
       uses: actions/create-release@v1
@@ -69,8 +80,8 @@ jobs:
       with:
         draft: false
         prerelease:  ${{ env.branch != 'main' }}
-        release_name: kindxt-${{ needs.build.outputs.semVer }}
-        tag_name: v${{ needs.build.outputs.semVer }}
+        release_name: kindxt-${{ env.version}}
+        tag_name: v${{ env.version }}
         body_path: CHANGELOG.md
       env:
         GITHUB_TOKEN: ${{ github.token }}
@@ -80,6 +91,6 @@ jobs:
         GITHUB_TOKEN: ${{ github.token }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ runner.temp }}/kindxt-windows-${{ needs.build.outputs.semVer }}.zip
-        asset_name: kindxt-windows-${{ needs.build.outputs.semVer }}.zip
+        asset_path: ${{ runner.temp }}/${{ env.windows_package_name }}.zip
+        asset_name: ${{ env.windows_package_name }}.zip
         asset_content_type: application/zip

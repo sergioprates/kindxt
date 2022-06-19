@@ -74,6 +74,12 @@ jobs:
       with:
         name: ${{ env.windows_package_name }}
         path: ${{ runner.temp }}
+    - name: Update CHANGELOG
+      id: changelog
+      uses: Requarks/changelog-action@v1
+      with:
+        token: ${{ github.token }}
+        tag: v${{ env.version }}
     - name: release
       uses: actions/create-release@v1
       id: create_release
@@ -82,9 +88,15 @@ jobs:
         prerelease:  ${{ env.branch != 'main' }}
         release_name: kindxt-${{ env.version}}
         tag_name: v${{ env.version }}
-        body_path: CHANGELOG.md
+        body: ${{ steps.changelog.outputs.changes }}
       env:
         GITHUB_TOKEN: ${{ github.token }}
+    - name: Commit CHANGELOG.md
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        branch: main
+        commit_message: 'docs: update CHANGELOG.md for v${{ env.version }} [skip ci]'
+        file_pattern: CHANGELOG.md
     - name: Upload release windows
       uses: actions/upload-release-asset@v1
       env:

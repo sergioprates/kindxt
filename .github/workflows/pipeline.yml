@@ -65,43 +65,51 @@ jobs:
     env:
       branch: ${{ github.head_ref || github.ref_name }} 
       version: ${{ needs.build.outputs.semVer }}
+      tag: v${{ needs.build.outputs.semVer }}
       windows_package_name: 'kindxt-windows-${{ needs.build.outputs.semVer }}'
 
     steps:
     - uses: actions/checkout@v2
+    - name: Fetch unshallow
+      run: git fetch --prune --tags --unshallow
     - name: 'Download windows artifact'
       uses: actions/download-artifact@v2
       with:
         name: ${{ env.windows_package_name }}
         path: ${{ runner.temp }}
-    - name: Bump version and push tag
-      id: tag_version
-      uses: mathieudutour/github-tag-action@v6.0
+    - name: Create Draft Release
+      uses: ncipollo/release-action@v1
       with:
-        custom_tag: v${{ env.version }}
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        prerelease: true
+        draft: false
+        commit: ${{ github.sha }}
+        tag: ${{ env.tag }}
+        name: kindxt-${{ env.version}}
+        body: '*pending*'
+        token: ${{ github.token }}
     - name: Update CHANGELOG
       id: changelog
       uses: Requarks/changelog-action@v1
       with:
         token: ${{ github.token }}
-        tag: v${{ env.version }}
-    - name: release
-      uses: actions/create-release@v1
-      id: create_release
+        tag: ${{ env.tag }}
+
+    - name: Create Release
+      uses: ncipollo/release-action@v1
       with:
-        draft: false
         prerelease:  ${{ env.branch != 'main' }}
-        release_name: kindxt-${{ env.version}}
-        tag_name: v${{ env.version }}
+        allowUpdates: true
+        draft: false
+        tag: ${{ env.tag }}
+        name: kindxt-${{ env.version}}
         body: ${{ steps.changelog.outputs.changes }}
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
+        token: ${{ github.token }}
+
     - name: Commit CHANGELOG.md
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        branch: main
-        commit_message: 'docs: update CHANGELOG.md for v${{ env.version }} [skip ci]'
+        branch: ${{ env.branch }}
+        commit_message: 'docs: update CHANGELOG.md for ${{ env.tag }} [skip ci]'
         file_pattern: CHANGELOG.md
     - name: Upload release windows
       uses: actions/upload-release-asset@v1

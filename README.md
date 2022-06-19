@@ -1,7 +1,6 @@
 # kindxt
 
-[![main](https://github.com/sergioprates/kindxt/actions/workflows/pipeline.yml/badge.svg)](https://github.com/sergioprates/kindxt/actions/workflows/pipeline.yml?branch=main)
-[![develop](https://github.com/sergioprates/kindxt/actions/workflows/pipeline.yml/badge.svg)](https://github.com/sergioprates/kindxt/actions/workflows/pipeline.yml?branch=develop)
+[![main](https://github.com/sergioprates/kindxt/actions/workflows/pipeline.yml/badge.svg?branch=main)](https://github.com/sergioprates/kindxt/actions/workflows/pipeline.yml)
 
 Kindxt is a wrapper for kind to easyly install common applications on kind. This is only for local environments and consider some convetions for configurations.
 

@@ -80,7 +80,7 @@ jobs:
     - name: Get Last Tag
       id: get_last_tag
       run: |
-        last_tag=git tag  | grep -E '^v[0-9]' | sort -V | tail -1
+        echo "last_tag=git tag  | grep -E '^v[0-9]' | sort -V | tail -1"
         echo "::set-output name=last_tag::$last_tag"
         echo $last_tag
     - name: Update CHANGELOG

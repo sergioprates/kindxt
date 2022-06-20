@@ -77,22 +77,17 @@ jobs:
       with:
         name: ${{ env.windows_package_name }}
         path: ${{ runner.temp }}
-    - name: Create Draft Release
-      uses: ncipollo/release-action@v1
-      with:
-        prerelease: true
-        draft: false
-        commit: ${{ github.sha }}
-        tag: ${{ env.tag }}
-        name: kindxt-${{ env.version}}
-        body: '*pending*'
-        token: ${{ github.token }}
+    - name: Get Last Tag
+      id: get_last_tag
+      run: |
+        $last_tag=git tag -l --sort=-creatordate | head -n 1
+        echo "::set-output name=last_tag::$last_tag"
     - name: Update CHANGELOG
       id: changelog
       uses: Requarks/changelog-action@v1
       with:
         token: ${{ github.token }}
-        tag: ${{ env.tag }}
+        tag: ${{ steps.get_last_tag.outputs.last_tag }}
 
     - name: Create Release
       uses: ncipollo/release-action@v1

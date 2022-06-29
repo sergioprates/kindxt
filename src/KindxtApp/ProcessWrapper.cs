@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Kindxt;
 public class ProcessWrapper
@@ -11,52 +12,70 @@ public class ProcessWrapper
     {
         _file = file;
     }
-    public ProcessWrapper ExecuteCommand(string arguments, string workingDirectory = "", bool ignoreError = false)
+    public ProcessWrapper ExecuteCommand(string arguments, string workingDirectory = "", bool ignoreError = false, int timeout = 300000)
     {
-        var processStartInfo = new ProcessStartInfo
+        var process = new Process();
+        process.StartInfo.FileName = FindExecutable(_file);
+        process.StartInfo.Arguments = arguments;
+        process.StartInfo.UseShellExecute = false;
+        process.StartInfo.RedirectStandardOutput = true;
+        process.StartInfo.RedirectStandardError = true;
+        process.StartInfo.WorkingDirectory = workingDirectory;
+        process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+
+        StringBuilder output = new StringBuilder();
+        StringBuilder error = new StringBuilder();
+
+        using (AutoResetEvent outputWaitHandle = new AutoResetEvent(false))
+        using (AutoResetEvent errorWaitHandle = new AutoResetEvent(false))
         {
-            FileName = FindExecutable(_file),
-            Arguments = arguments,
-            UseShellExecute = false,
-            WorkingDirectory = workingDirectory,
-            WindowStyle = ProcessWindowStyle.Hidden,
-            RedirectStandardOutput = true
-        };
+            process.OutputDataReceived += (sender, e) =>
+            {
+                if (e.Data == null)
+                {
+                    outputWaitHandle.Set();
+                }
+                else
+                {
+                    Console.WriteLine(e.Data);
+                    output.AppendLine(e.Data);
+                }
+            };
+            process.ErrorDataReceived += (sender, e) =>
+            {
+                if (e.Data == null)
+                {
+                    errorWaitHandle.Set();
+                }
+                else
+                {
+                    Console.WriteLine(e.Data);
+                    error.AppendLine(e.Data);
+                }
+            };
 
-        var process = Process.Start(processStartInfo);
+            if (!process.Start())
+                throw new Exception($"The process failed to start: {_file} {arguments}");
 
-        if (process == null)
-            throw new Exception($"The process failed to start: {_file} {arguments}");
+            _process = process;
+            process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
 
-        process.WaitForExit();
-        _process = process;
-
-        if (process.ExitCode != 0 && ignoreError == false)
-            throw new Exception($"The process failed to start: {_file} {arguments}. Verify if your docker is running.");
+            if (process.WaitForExit(timeout) &&
+                outputWaitHandle.WaitOne(timeout) &&
+                errorWaitHandle.WaitOne(timeout))
+            {
+                if (process.ExitCode != 0 && ignoreError == false)
+                    throw new Exception($"The process failed to start: {_file} {arguments}. Verify if your docker is running.");
+            }
+            else
+            {
+                throw new Exception($"The process exceded the maximum timeout: {_file} {arguments}.");
+            }
+        }
 
         return this;
 
-    }
-
-    public string? ReadOutput()
-    {
-        return _process?.StandardOutput.ReadToEnd();
-    }
-
-    public ProcessWrapper StartProccess(string arguments, string workingDirectory,
-        bool useShell = true)
-    {
-        var processStartInfo = new ProcessStartInfo
-        {
-            FileName = FindExecutable(_file),
-            Arguments = arguments,
-            UseShellExecute = useShell,
-            WorkingDirectory = workingDirectory,
-            WindowStyle = ProcessWindowStyle.Hidden
-        };
-
-        _process = Process.Start(processStartInfo);
-        return this;
     }
 
     private string FindExecutable(string name) =>

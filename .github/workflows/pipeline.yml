@@ -67,6 +67,8 @@ jobs:
       version: ${{ needs.build.outputs.semVer }}
       tag: v${{ needs.build.outputs.semVer }}
       windows_package_name: 'kindxt-windows-${{ needs.build.outputs.semVer }}'
+      packageFileName: 'kindxt-windows-${{ needs.build.outputs.semVer }}.exe'
+      packageId: 'kindxt'
 
     steps:
     - uses: actions/checkout@v2
@@ -100,9 +102,9 @@ jobs:
         asset_name: ${{ env.windows_package_name }}.zip
         asset_content_type: application/zip
     
-     - name: Submit package to Windows Package Manager Community Repository
-       run: |
-         iwr https://aka.ms/wingetcreate/latest -OutFile wingetcreate.exe
-         $github = Get-Content '${{ github.event_path }}' | ConvertFrom-Json
-         $installerUrl = $github.release.assets | Where-Object -Property name -match ${env:packageFileName} | Select -ExpandProperty browser_download_url -First 1
-         .\wingetcreate.exe update ${env:packageId} -s -v $github.release.tag_name -u $installerUrl -t ${{ secrets.Project_PAT }}
+    - name: Submit package to Windows Package Manager Community Repository
+      run: |
+        iwr https://aka.ms/wingetcreate/latest -OutFile wingetcreate.exe
+        $github = Get-Content '${{ github.event_path }}' | ConvertFrom-Json
+        $installerUrl = $github.release.assets | Where-Object -Property name -match ${env:packageFileName} | Select -ExpandProperty browser_download_url -First 1
+        .\wingetcreate.exe update ${env:packageId} -s -v $github.release.tag_name -u $installerUrl -t ${{ secrets.Project_PAT }}

@@ -67,8 +67,6 @@ jobs:
       version: ${{ needs.build.outputs.semVer }}
       tag: v${{ needs.build.outputs.semVer }}
       windows_package_name: 'kindxt-windows-${{ needs.build.outputs.semVer }}'
-      packageFileName: 'kindxt-windows-${{ needs.build.outputs.semVer }}.exe'
-      packageId: 'kindxt'
 
     steps:
     - uses: actions/checkout@v2

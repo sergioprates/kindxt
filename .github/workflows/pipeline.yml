@@ -77,18 +77,6 @@ jobs:
       with:
         name: ${{ env.windows_package_name }}
         path: ${{ runner.temp }}
-    - name: Get Last Tag
-      id: get_last_tag
-      run: |
-        last_tag=$(git tag  | grep -E '^v[0-9]' | sort -V | tail -1)
-        echo "::set-output name=last_tag::$last_tag"
-        echo $last_tag
-    - name: Update CHANGELOG
-      id: changelog
-      uses: Requarks/changelog-action@v1
-      with:
-        token: ${{ github.token }}
-        tag: ${{ steps.get_last_tag.outputs.last_tag }}
 
     - name: Create Release
       uses: ncipollo/release-action@v1
@@ -98,15 +86,9 @@ jobs:
         draft: false
         tag: ${{ env.tag }}
         name: kindxt-${{ env.version}}
-        body: ${{ steps.changelog.outputs.changes }}
+        # body: ${{ steps.changelog.outputs.changes }}
         token: ${{ github.token }}
 
-    - name: Commit CHANGELOG.md
-      uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        branch: ${{ env.branch }}
-        commit_message: 'docs: update CHANGELOG.md for ${{ env.tag }} [skip ci]'
-        file_pattern: CHANGELOG.md
     - name: Upload release windows
       uses: actions/upload-release-asset@v1
       env:

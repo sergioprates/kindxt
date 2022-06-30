@@ -28,6 +28,15 @@ When I was configuring kind with some applications, I feel some pain to organize
 
 Run the command without the --create-cluster parameter and the reinstall will happen.
 
+## How to add new chart?
+
+1. Create a new folder inside the directory charts
+2. Create a class that inherit IHelmChart and HelmChartBase
+3. Implement the methods and create a config file with the default configurations
+4. Create a port mapping in the class Ports. The number of the node port should be incremental
+5. Update the readme with the parameters, default url user and password if apply
+6. Open a pull request
+
 ## Roadmap
 
 1. Log the ports opened in install action

@@ -12,19 +12,10 @@ namespace Kindxt
 
         public void RegisterHandler(KindClusterBuilder kindClusterBuilder)
         {
-            this.SetHandler<KindxtParameters, InvocationContext>((parameters,
+            this.SetHandler<List<string>, InvocationContext>((parameters,
                 ctx) =>
             {
-                if (parameters.CreateCluster)
-                    kindClusterBuilder.CreateCluster();
-                if (parameters.InstallSqlServer)
-                    kindClusterBuilder.WithSqlServer();
-                if (parameters.InstallPostgres)
-                    kindClusterBuilder.WithPostgres();
-                if (parameters.InstallPgAdmin)
-                    kindClusterBuilder.WithPgAdmin();
-                if (parameters.InstallNginxIngress)
-                    kindClusterBuilder.WithNginxIngress();
+                kindClusterBuilder.Build(parameters);
             }, new ParametersBinder(this));
         }
     }

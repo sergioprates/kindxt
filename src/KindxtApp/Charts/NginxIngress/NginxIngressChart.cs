@@ -1,4 +1,6 @@
-﻿namespace Kindxt.Charts.NginxIngress
+﻿using Kindxt.Kind;
+
+namespace Kindxt.Charts.NginxIngress
 {
     public class NginxIngressChart : HelmChartBase, IHelmChart
     {
@@ -12,5 +14,9 @@
                 "nginx-ingress",
                 configDirectory);
         }
+
+        public string[] Parameters => new[] {"--nginx-ingress", "-nginx"};
+        public string Description => "Install nginx-ingress chart on kind";
+        public ExtraPortMapping GetPortMapping() => Ports.NginxIngress;
     }
 }

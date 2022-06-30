@@ -1,4 +1,6 @@
-﻿namespace Kindxt.Charts.Adminer
+﻿using Kindxt.Kind;
+
+namespace Kindxt.Charts.Adminer
 {
     public class PgAdminChart : HelmChartBase, IHelmChart
     {
@@ -12,5 +14,9 @@
                 "pgadmin",
                 configDirectory);
         }
+
+        public string[] Parameters => new[] { "--pgAdmin", "-pssql-admin" };
+        public string Description => "Install pgadmin chart on kind";
+        public ExtraPortMapping GetPortMapping() => Ports.PgAdmin;
     }
 }

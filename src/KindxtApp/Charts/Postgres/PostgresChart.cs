@@ -1,4 +1,6 @@
-﻿namespace Kindxt.Charts.Postgres
+﻿using Kindxt.Kind;
+
+namespace Kindxt.Charts.Postgres
 {
     public class PostgresChart : HelmChartBase, IHelmChart
     {
@@ -12,5 +14,9 @@
                 "postgres",
                 configDirectory);
         }
+
+        public string[] Parameters => new[] { "--postgres", "-pssql" };
+        public string Description => "Install postgres chart on kind";
+        public ExtraPortMapping GetPortMapping() => Ports.Postgres;
     }
 }

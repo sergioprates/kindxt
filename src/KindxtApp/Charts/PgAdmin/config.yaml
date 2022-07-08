@@ -5,3 +5,6 @@ service:
 env:
     email: desenv@local.com
     password: P@ssword123
+
+persistentVolume:
+    size: 4Gi

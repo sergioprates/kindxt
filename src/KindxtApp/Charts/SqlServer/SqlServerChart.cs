@@ -1,4 +1,6 @@
-﻿namespace Kindxt.Charts.SqlServer;
+﻿using Kindxt.Kind;
+
+namespace Kindxt.Charts.SqlServer;
 public class SqlServerChart : HelmChartBase, IHelmChart
 {
     public void Install()
@@ -11,4 +13,8 @@ public class SqlServerChart : HelmChartBase, IHelmChart
             "sqlserver",
             configDirectory);
     }
+
+    public string[] Parameters => new[] {"--sqlserver", "-sql"};
+    public string Description => "Install sqlserver chart on kind";
+    public ExtraPortMapping GetPortMapping() => Ports.SqlServer;
 }

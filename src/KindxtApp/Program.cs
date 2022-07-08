@@ -17,5 +17,3 @@ await new CommandLineBuilder(kindxtCommand)
     .UseDefaults()
     .Build()
     .InvokeAsync(args);
-
-kindClusterBuilder.Build();

@@ -14,7 +14,7 @@ namespace Kindxt.Charts
                 .ExecuteCommand($"repo add {repoName} {repoUrl}", ignoreError: true)
                 .ExecuteCommand("repo update", ignoreError: true)
                 .ExecuteCommand($"uninstall {releaseName}", ignoreError: true)
-                .ExecuteCommand($"install {releaseName} {chartName} --wait --timeout=3m -f config.yaml", 
+                .ExecuteCommand($"install {releaseName} {chartName} --wait --debug --timeout=5m -f config.yaml", 
                     Path.Combine(KindxtPath.GetProcessPath(), configDirectory));
         }
     }

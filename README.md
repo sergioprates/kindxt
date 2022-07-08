@@ -1,6 +1,6 @@
 # kindxt
 
-[![Build](https://github.com/sergioprates/kindxt/actions/workflows/pipeline.yml/badge.svg)](https://github.com/sergioprates/kindxt/actions/workflows/pipeline.yml)
+[![main](https://github.com/sergioprates/kindxt/actions/workflows/pipeline.yml/badge.svg?branch=main)](https://github.com/sergioprates/kindxt/actions/workflows/pipeline.yml)
 
 Kindxt is a wrapper for kind to easyly install common applications on kind. This is only for local environments and consider some convetions for configurations.
 
@@ -8,7 +8,7 @@ When I was configuring kind with some applications, I feel some pain to organize
 
 ## Getting Started
 
-1. Download the kindxt from releases on github
+1. Download the kindxt from [releases on github](https://github.com/sergioprates/kindxt/releases).
 2. Put the executable on PATH environment variable
 3. Run kindxt --help to see all options
 
@@ -27,6 +27,15 @@ When I was configuring kind with some applications, I feel some pain to organize
 ## If I want reinstall some package?
 
 Run the command without the --create-cluster parameter and the reinstall will happen.
+
+## How to add new chart?
+
+1. Create a new folder inside the directory charts
+2. Create a class that inherit IHelmChart and HelmChartBase
+3. Implement the methods and create a config file with the default configurations
+4. Create a port mapping in the class Ports. The number of the node port should be incremental
+5. Update the readme with the parameters, default url user and password if apply
+6. Open a pull request
 
 ## Roadmap
 

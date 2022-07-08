@@ -1,0 +1,67 @@
+ {{- $root := . -}}
+ {{- with .Values.workers }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "citus.fullname" $root }}-worker
+  labels:
+    {{- include "citus.labels" $root | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "citus.labels" $root | nindent 6 }}
+      app: citus-workers
+  serviceName: {{ include "citus.fullname" $root }}-workers
+  replicas: {{ .replicas }} 
+  template:
+    metadata:
+      labels:
+      {{- include "citus.labels" $root | nindent 8 }}
+        app: citus-workers
+    spec:
+      containers:
+      - name: {{ $root.Chart.Name }}
+        image: "{{ .image.repository }}:{{ .image.tag | default $root.Chart.AppVersion }}"
+        lifecycle:
+          postStart:
+            exec:
+              command: 
+              - /bin/sh
+              - -c
+              - if [ ${POD_IP} ]; then psql --host={{ include "citus.fullname" $root }}-master --username={{ $root.Values.username }} --command="SELECT * from citus_add_node('${HOSTNAME}.{{ include "citus.fullname" $root }}-workers', {{ .service.port }});" ; fi
+        ports:
+        - containerPort: {{ .service.port }}
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "citus.fullname" $root }}
+              key: password
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "citus.fullname" $root }}
+              key: password
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        volumeMounts:
+        - name: storage
+          mountPath: /var/lib/postgresql/data
+        livenessProbe:
+          exec:
+            command:
+            - ./pg_healthcheck
+          initialDelaySeconds: 60
+  volumeClaimTemplates:
+  - metadata:
+      name: storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: {{ $root.Values.pvc.storage }}
+{{- end }}

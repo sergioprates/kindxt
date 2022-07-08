@@ -19,7 +19,8 @@ When I was configuring kind with some applications, I feel some pain to organize
 | -c, --create-cluster  | Delete the cluster and create a new one  | - | - | - | - |
 | -sql, --sqlserver  | Install sqlserver chart on kind | localhost:1433 | 30000 | sa | P@ssword123 |
 | -pssql, --postgres | Install postgres chart on kind  | localhost:5432 | 30001 | desenv | P@ssword123 |
-| -pssql-admin, --pgAdmin  | Install pgadmin chart on kind | http://localhost:9000 | 30002 | desenv@local.com | P@ssword123 |
+| --citus | Install citus chart with 2 nodes on kind, this doesn't work together with postgresql  | localhost:5432 | 30001 | desenv | P@ssword123 |
+| -pssql-admin, --pg-admin  | Install pgadmin chart on kind | http://localhost:9000 | 30002 | desenv@local.com | P@ssword123 |
 | -nginx, --nginx-ingress | Install nginx-ingress chart on kind | http://localhost:8080 | 30003 | - | - |
 | --version | Show version information | - | - | - | - |
 | -?, -h, --help | Show help and usage information | - | - | - | - |

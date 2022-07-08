@@ -1,0 +1,17 @@
+ {{- $root := . -}}
+ {{- with .Values.workers }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "citus.fullname" $root }}-workers
+  labels:
+    {{- include "citus.labels" $root | nindent 4 }}
+    app: citus-workers
+spec:
+  type: {{ .service.type }}
+  selector:
+    {{- include "citus.labels" $root | nindent 4 }}
+    app: citus-workers
+  ports:
+  - port: {{ .service.port }}
+{{- end }}

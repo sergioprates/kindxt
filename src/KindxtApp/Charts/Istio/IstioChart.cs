@@ -16,23 +16,23 @@ namespace Kindxt.Charts.Istio
                 .ExecuteCommand($"label namespace istio-ingress istio-injection=enabled --overwrite",
                     ignoreError: true);
 
-            base.Install("istio/base",
+            base.InstallFromRepo("istio/base",
                 "istio",
                 "https://istio-release.storage.googleapis.com/charts",
                 "istio-base",
                 @namespace: "istio-system");
 
-            base.Install("istio/istiod",
+            base.InstallFromRepo("istio/istiod",
                 "istio",
                 "https://istio-release.storage.googleapis.com/charts",
                 "istiod",
                 @namespace: "istio-system");
 
             var configFile = Path.Combine(configDirectory, "istio-ingress-config.yaml");
-            base.Install("istio/gateway",
+            base.InstallFromRepo("istio/gateway",
                 "istio",
                 "https://istio-release.storage.googleapis.com/charts",
-                "istiod",
+                "istio-ingress",
                 configFile,
                 @namespace: "istio-ingress");
 

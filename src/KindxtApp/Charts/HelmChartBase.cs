@@ -4,7 +4,7 @@ namespace Kindxt.Charts
 {
     public abstract class HelmChartBase
     {
-        public virtual void Install(string chartName,
+        public virtual void InstallFromRepo(string chartName,
             string repoName, 
             string repoUrl, 
             string releaseName,

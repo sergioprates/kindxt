@@ -5,9 +5,9 @@ public class SqlServerChart : HelmChartBase, IHelmChart
 {
     public void Install()
     {
-        var configDirectory = Path.Combine("Charts", "SqlServer");
+        var configDirectory = Path.Combine("Charts", "SqlServer", "config.yaml");
 
-        base.Install("stable/mssql-linux",
+        base.InstallFromRepo("stable/mssql-linux",
             "stable",
             "https://charts.helm.sh/stable",
             "sqlserver",

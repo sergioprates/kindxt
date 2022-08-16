@@ -6,9 +6,9 @@ namespace Kindxt.Charts.Postgres
     {
         public void Install()
         {
-            var configDirectory = Path.Combine("Charts", "Postgres");
+            var configDirectory = Path.Combine("Charts", "Postgres", "config.yaml");
 
-            base.Install("bitnami/postgresql",
+            base.InstallFromRepo("bitnami/postgresql",
                 "bitnami",
                 "https://charts.bitnami.com/bitnami",
                 "postgres",

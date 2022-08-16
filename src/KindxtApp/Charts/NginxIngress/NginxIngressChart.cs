@@ -8,7 +8,7 @@ namespace Kindxt.Charts.NginxIngress
         {
             var configDirectory = Path.Combine("Charts", "NginxIngress");
 
-            base.Install("ingress-nginx/ingress-nginx",
+            base.InstallFromRepo("ingress-nginx/ingress-nginx",
                 "ingress-nginx",
                 "https://kubernetes.github.io/ingress-nginx",
                 "nginx-ingress",

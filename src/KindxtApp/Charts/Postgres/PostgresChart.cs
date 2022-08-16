@@ -17,6 +17,6 @@ namespace Kindxt.Charts.Postgres
 
         public string[] Parameters => new[] { "--postgres", "-pssql" };
         public string Description => "Install postgres chart on kind";
-        public ExtraPortMapping GetPortMapping() => Ports.Postgres;
+        public ExtraPortMapping[] GetPortMapping() => Ports.Postgres;
     }
 }

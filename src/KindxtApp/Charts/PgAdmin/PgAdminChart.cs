@@ -17,6 +17,6 @@ namespace Kindxt.Charts.Adminer
 
         public string[] Parameters => new[] { "--pgAdmin", "-pssql-admin" };
         public string Description => "Install pgadmin chart on kind";
-        public ExtraPortMapping GetPortMapping() => Ports.PgAdmin;
+        public ExtraPortMapping[] GetPortMapping() => Ports.PgAdmin;
     }
 }

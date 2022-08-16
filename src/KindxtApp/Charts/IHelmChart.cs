@@ -7,6 +7,6 @@ namespace Kindxt.Charts
         void Install();
         string[] Parameters { get; }
         string Description { get; }
-        ExtraPortMapping GetPortMapping();
+        ExtraPortMapping[] GetPortMapping();
     }
 }

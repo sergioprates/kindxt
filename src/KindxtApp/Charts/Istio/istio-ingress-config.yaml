@@ -1,0 +1,18 @@
+﻿service:
+  type: NodePort
+  ports:
+  - name: http2
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+    nodePort: 30004
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: 8443
+    nodePort: 30005
+  - name: status-port
+    port: 15021
+    protocol: TCP
+    targetPort: 15021
+    nodePort: 30006

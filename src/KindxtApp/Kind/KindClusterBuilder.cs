@@ -47,7 +47,7 @@ public class KindClusterBuilder
                 _kindConfig
                     .GetNode()
                     .ExtraPortMappings
-                    .Add(helmChart.GetPortMapping());
+                    .AddRange(helmChart.GetPortMapping());
                 _helmCharts.Add(helmChart);
             }
         }

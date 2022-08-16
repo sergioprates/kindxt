@@ -35,9 +35,10 @@ public class KindClusterBuilder
             _kindConfig
                 .GetNode()
                 .ExtraPortMappings
-                .Add(helmChart.GetPortMapping());
+                .AddRange(helmChart.GetPortMapping());
         }
 
+        var kind = new ProcessWrapper(command);
         if (parameters.Any(x => new[] { "--create-cluster", "-c" }.Contains(x)))
         {
             var kindConfigFileName = "kind-config.yaml";
@@ -48,8 +49,6 @@ public class KindClusterBuilder
 
             var configText = _serializerYaml.Serialize(_kindConfig);
             File.WriteAllText(Path.Combine(tmpDirectory, kindConfigFileName), configText, Encoding.UTF8);
-
-            var kind = new ProcessWrapper(command);
             kind
             .ExecuteCommand("delete cluster", ignoreError: true)
             .ExecuteCommand($"create cluster --config={kindConfigFileName} -v 1", tmpDirectory);

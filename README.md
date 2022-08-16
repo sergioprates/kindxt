@@ -20,6 +20,7 @@ When I was configuring kind with some applications, I feel some pain to organize
 | -sql, --sqlserver  | Install sqlserver chart on kind | localhost:1433 | 30000 | sa | P@ssword123 |
 | -pssql, --postgres | Install postgres chart on kind  | localhost:5432 | 30001 | desenv | P@ssword123 |
 | --citus | Install citus chart with 2 nodes on kind, this doesn't work together with postgresql  | localhost:5432 | 30001 | desenv | P@ssword123 |
+| --istio-ingress | Install istio-ingress chart on kind, this create the namespaces istio-ingress and istio-system | localhost:8081 http, localhost:8082 https, localhost:8083 status-port | 30004, 3005, 3006 | - | - |
 | -pssql-admin, --pg-admin  | Install pgadmin chart on kind | http://localhost:9000 | 30002 | desenv@local.com | P@ssword123 |
 | -nginx, --nginx-ingress | Install nginx-ingress chart on kind | http://localhost:8080 | 30003 | - | - |
 | --version | Show version information | - | - | - | - |

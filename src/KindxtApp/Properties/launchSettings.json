@@ -2,7 +2,7 @@
   "profiles": {
     "KindxtApp": {
       "commandName": "Project",
-      "commandLineArgs": "--citus --pg-admin --create-cluster"
+      "commandLineArgs": "--create-cluster --istio-ingress -pssql -pssql-admin"
     }
   }
 }

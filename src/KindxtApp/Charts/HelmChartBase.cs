@@ -8,22 +8,16 @@ namespace Kindxt.Charts
             string repoName, 
             string repoUrl, 
             string releaseName,
-            string chartDirectory) 
+            string? configPath = null,
+            string @namespace = "default")
         {
+            string configCommand = string.IsNullOrWhiteSpace(configPath) ? "" : $" -f {configPath}";
             new ProcessWrapper("helm")
                 .ExecuteCommand($"repo add {repoName} {repoUrl}", ignoreError: true)
                 .ExecuteCommand("repo update", ignoreError: true)
-                .ExecuteCommand($"uninstall {releaseName}", ignoreError: true)
-                .ExecuteCommand($"install {releaseName} {chartName} --wait --debug --timeout=5m -f config.yaml", 
-                    Path.Combine(KindxtPath.GetProcessPath(), chartDirectory), ignoreError: true);
-        }
-        public virtual void InstallFromLocalChart(string chartPath,
-            string releaseName) 
-        {
-            new ProcessWrapper("helm")
-                .ExecuteCommand($"uninstall {releaseName}", ignoreError: true)
-                .ExecuteCommand($"install {releaseName} {Path.Combine(KindxtPath.GetProcessPath(), chartPath)} --wait --debug --timeout=5m", 
-                    Path.Combine(KindxtPath.GetProcessPath(), chartPath), ignoreError:true);
+                .ExecuteCommand($"uninstall {releaseName} -n {@namespace}", ignoreError: true)
+                .ExecuteCommand($"install {releaseName} {chartName} -n {@namespace} --wait --debug --timeout=5m {configCommand}", 
+                    KindxtPath.GetProcessPath());
         }
     }
 }

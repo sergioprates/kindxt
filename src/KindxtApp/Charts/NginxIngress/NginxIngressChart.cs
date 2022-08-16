@@ -17,6 +17,6 @@ namespace Kindxt.Charts.NginxIngress
 
         public string[] Parameters => new[] {"--nginx-ingress", "-nginx"};
         public string Description => "Install nginx-ingress chart on kind";
-        public ExtraPortMapping GetPortMapping() => Ports.NginxIngress;
+        public ExtraPortMapping[] GetPortMapping() => Ports.NginxIngress;
     }
 }

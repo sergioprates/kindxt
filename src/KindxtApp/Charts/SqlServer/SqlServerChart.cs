@@ -5,7 +5,7 @@ public class SqlServerChart : HelmChartBase, IHelmChart
 {
     public void Install()
     {
-        var configDirectory = Path.Combine("Charts", "SqlServer");
+        var configDirectory = Path.Combine("Charts", "SqlServer", "config.yaml");
 
         base.InstallFromRepo("stable/mssql-linux",
             "stable",
@@ -16,5 +16,5 @@ public class SqlServerChart : HelmChartBase, IHelmChart
 
     public string[] Parameters => new[] {"--sqlserver", "-sql"};
     public string Description => "Install sqlserver chart on kind";
-    public ExtraPortMapping GetPortMapping() => Ports.SqlServer;
+    public ExtraPortMapping[] GetPortMapping() => Ports.SqlServer;
 }

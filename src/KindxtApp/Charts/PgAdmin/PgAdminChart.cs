@@ -6,7 +6,7 @@ namespace Kindxt.Charts.Adminer
     {
         public void Install()
         {
-            var configDirectory = Path.Combine("Charts", "PgAdmin");
+            var configDirectory = Path.Combine("Charts", "PgAdmin", "config.yaml");
 
             base.InstallFromRepo("runix/pgadmin4",
                 "runix",
@@ -17,6 +17,6 @@ namespace Kindxt.Charts.Adminer
 
         public string[] Parameters => new[] { "--pg-admin", "-pssql-admin" };
         public string Description => "Install pgadmin chart on kind";
-        public ExtraPortMapping GetPortMapping() => Ports.PgAdmin;
+        public ExtraPortMapping[] GetPortMapping() => Ports.PgAdmin;
     }
 }

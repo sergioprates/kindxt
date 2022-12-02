@@ -2,9 +2,10 @@
 kind: Gateway
 metadata:
   name: default-gateway
+  namespace: istio-system
 spec:
   selector:
-    istio: ingress
+    istio: ingressgateway
   servers:
   - port:
       number: 80

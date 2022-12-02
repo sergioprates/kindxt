@@ -6,7 +6,7 @@ namespace Kindxt.Charts.NginxIngress
     {
         public void Install()
         {
-            var configDirectory = Path.Combine("Charts", "NginxIngress");
+            var configDirectory = Path.Combine("Charts", "NginxIngress", "config.yaml");
 
             base.InstallFromRepo("ingress-nginx/ingress-nginx",
                 "ingress-nginx",

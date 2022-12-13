@@ -7,6 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B22AA833-7F4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kindxt", "src\KindxtApp\Kindxt.csproj", "{C59A86A2-A9E8-47E0-B095-F7CC9D3188D7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1E330AE4-58FB-4674-B4B8-5C4F180CC3B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "tests\UnitTests\UnitTests.csproj", "{0214AC41-2A18-4226-83C3-15D74C01F100}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +21,17 @@ Global
 		{C59A86A2-A9E8-47E0-B095-F7CC9D3188D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C59A86A2-A9E8-47E0-B095-F7CC9D3188D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C59A86A2-A9E8-47E0-B095-F7CC9D3188D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0214AC41-2A18-4226-83C3-15D74C01F100}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0214AC41-2A18-4226-83C3-15D74C01F100}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0214AC41-2A18-4226-83C3-15D74C01F100}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0214AC41-2A18-4226-83C3-15D74C01F100}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C59A86A2-A9E8-47E0-B095-F7CC9D3188D7} = {B22AA833-7F49-4419-AD47-A9B9048A39FA}
+		{0214AC41-2A18-4226-83C3-15D74C01F100} = {1E330AE4-58FB-4674-B4B8-5C4F180CC3B1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8917D197-3B11-4269-92CA-5019D2F39294}

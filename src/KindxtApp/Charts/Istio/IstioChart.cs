@@ -12,8 +12,7 @@ namespace Kindxt.Charts.Istio
             var kubectl = new ProcessWrapper("kubectl");
             kubectl
                 .ExecuteCommand($"create namespace istio-system", ignoreError: true)
-                .ExecuteCommand($"create namespace istio-ingress", ignoreError: true)
-                .ExecuteCommand($"label namespace istio-ingress istio-injection=enabled --overwrite",
+                .ExecuteCommand($"label namespace istio-system istio-injection=enabled --overwrite",
                     ignoreError: true);
 
             base.InstallFromRepo("istio/base",
@@ -26,15 +25,16 @@ namespace Kindxt.Charts.Istio
                 "istio",
                 "https://istio-release.storage.googleapis.com/charts",
                 "istiod",
+                Path.Combine(configDirectory, "istiod-config.yaml"),
                 @namespace: "istio-system");
 
             var configFile = Path.Combine(configDirectory, "istio-ingress-config.yaml");
             base.InstallFromRepo("istio/gateway",
                 "istio",
                 "https://istio-release.storage.googleapis.com/charts",
-                "istio-ingress",
+                "istio-ingressgateway",
                 configFile,
-                @namespace: "istio-ingress");
+                @namespace: "istio-system");
 
             kubectl.ExecuteCommand("apply -f gateway.yaml", Path.Combine(KindxtPath.GetProcessPath(), configDirectory));
         }

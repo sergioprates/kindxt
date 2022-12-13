@@ -1,0 +1,6 @@
+﻿global:
+    tracer:
+        zipkin:
+            address: jaeger-collector.istio-system.svc.cluster.local:9411
+pilot:
+    traceSampling: 80

@@ -2,7 +2,7 @@
 using System.CommandLine.Invocation;
 using Kindxt.Kind;
 
-namespace Kindxt
+namespace Kindxt.Commands
 {
     public class KindxtRootCommand : RootCommand
     {

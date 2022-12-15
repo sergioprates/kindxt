@@ -1,8 +1,8 @@
 ﻿using Kindxt.Kind;
 
-namespace Kindxt
+namespace Kindxt.Commands
 {
-    public  interface ICommandParameter
+    public interface ICommandParameter
     {
         List<string> Parameters { get; set; }
         void Execute();

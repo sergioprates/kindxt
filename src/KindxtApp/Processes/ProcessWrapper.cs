@@ -75,7 +75,6 @@ public class ProcessWrapper
         }
 
         return this;
-
     }
 
     private string FindExecutable(string name) =>

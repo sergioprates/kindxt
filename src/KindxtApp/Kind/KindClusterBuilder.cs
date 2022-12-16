@@ -1,4 +1,3 @@
-using Kindxt.Charts;
 using Kindxt.Extensions;
 using Kindxt.Managers;
 using Kindxt.Processes;
@@ -15,8 +14,8 @@ public class KindClusterBuilder
 
     private const string KindConfigFileName = "kind-config.yaml";
 
-    public KindClusterBuilder(ISerializer serializer, 
-        IDeserializer deserializer, 
+    public KindClusterBuilder(ISerializer serializer,
+        IDeserializer deserializer,
         KindProcess kindProcess,
         FileManager fileManager,
         HelmChartManager helmChartManager)
@@ -34,12 +33,7 @@ public class KindClusterBuilder
         var helmChartsToInstall = _helmChartManager.GetHelmCharts(parameters);
 
         foreach (var helmChart in helmChartsToInstall)
-        {
-            _kindConfig
-                .GetNode()
-                .ExtraPortMappings
-                .AddRange(helmChart.GetPortMapping());
-        }
+            _kindConfig.AddPortsRange(helmChart.GetPortMapping());
 
         if (parameters.Any(x => new[] { "--create-cluster", "-c" }.Contains(x)))
         {
@@ -53,7 +47,7 @@ public class KindClusterBuilder
 
             _kindProcess
                 .ExecuteCommand("delete cluster", ignoreError: true)
-                .ExecuteCommand($"create cluster --config={KindConfigFileName} -v 1", tmpDirectory);
+            .ExecuteCommand($"create cluster --config={KindConfigFileName} -v 1", tmpDirectory);
         }
 
         foreach (var helmChart in helmChartsToInstall)

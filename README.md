@@ -1,16 +1,16 @@
-# kindxt
+# Kindxt
 
 [![main](https://github.com/sergioprates/kindxt/actions/workflows/pipeline.yml/badge.svg?branch=main)](https://github.com/sergioprates/kindxt/actions/workflows/pipeline.yml)
 
-Kindxt is a wrapper for kind to easyly install common applications on kind. This is only for local environments and consider some convetions for configurations.
+Kindxt is a wrapper for Kind to easily install common applications on Kind. This is only for local environments and you need to consider some conventions for configurations.
 
-When I was configuring kind with some applications, I feel some pain to organize all applications that I need because kind on windows ask us to configure the port maps between host and container. It's easy to do if you has only one application and only need to do this once. I needed to make this in various situations and I'm tired to do this. So I created this wrapper to do this configuration with the command line and I don't have to worry about conflicts on the kind node ports because the configuration will stay centralized and can be shared between projects.
+When I was configuring Kind with some applications, I felt some pain to organize all applications that I needed, because Kind on windows asks us to configure the port maps between the host and container. It's easy to do if you have only one application and only need to do this once. I had to do this configuration in many situations and I was tired to do this. So I created this wrapper to do this configuration with the command line so that I don't have to worry about conflicts on the Kind node ports because the configuration will stay centralized and can be shared between projects.
 
 ## Getting Started
 
-1. Download the kindxt from [releases on github](https://github.com/sergioprates/kindxt/releases).
-2. Put the executable on PATH environment variable
-3. Run kindxt --help to see all options
+1. Download the Kindxt from [releases on github](https://github.com/sergioprates/kindxt/releases).
+2. Put the executable on PATH environment variable.
+3. Run `kindxt --help` to see all options.
 
 ## All options accepted
 
@@ -26,23 +26,23 @@ When I was configuring kind with some applications, I feel some pain to organize
 | --version | Show version information | - | - | - | - |
 | -?, -h, --help | Show help and usage information | - | - | - | - |
 
-## If I want reinstall some package?
+## And if I want reinstall some package?
 
-Run the command without the --create-cluster parameter and the reinstall will happen.
+Run the command without the `--create-cluster` parameter and the reinstall will happen.
 
 ## How to add new chart?
 
-1. Create a new folder inside the directory charts
-2. Create a class that inherit IHelmChart and HelmChartBase
+1. Create a new folder inside the directory `charts`
+2. Create a class that inherits `IHelmChart` and `HelmChartBase`
 3. Implement the methods and create a config file with the default configurations
-4. Create a port mapping in the class Ports. The number of the node port should be incremental
-5. Update the readme with the parameters, default url user and password if apply
+4. Create a port mapping in the class `Ports`. The number of the node port should be incremental
+5. Update the readme with the parameters, default URL, user, and password if apply
 6. Open a pull request
 
 ## Roadmap
 
-1. Log the ports opened in install action
+1. Log the ports opened in the install action
 2. Version the package
 3. Generate changelog.md
-4. Generate chocolatey package
-5. Install kafka
+4. Generate a chocolatey package
+5. Install Kafka

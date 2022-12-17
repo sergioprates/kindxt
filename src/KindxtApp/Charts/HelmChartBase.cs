@@ -1,4 +1,5 @@
-﻿using Kindxt.Extensions;
+using Kindxt.Extensions;
+using Kindxt.Processes;
 
 namespace Kindxt.Charts
 {
@@ -12,7 +13,7 @@ namespace Kindxt.Charts
             string @namespace = "default")
         {
             string configCommand = string.IsNullOrWhiteSpace(configPath) ? "" : $" -f {configPath}";
-            new ProcessWrapper("helm")
+            new HelmProcess()
                 .ExecuteCommand($"repo add {repoName} {repoUrl}", ignoreError: true)
                 .ExecuteCommand("repo update", ignoreError: true)
                 .ExecuteCommand($"uninstall {releaseName} -n {@namespace}", ignoreError: true)

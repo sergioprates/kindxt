@@ -1,12 +1,10 @@
-﻿using Kindxt.Kind;
+using Kindxt.Kind;
 
-namespace Kindxt.Charts
+namespace Kindxt.Charts;
+public interface IHelmChart
 {
-    public interface IHelmChart
-    {
-        void Install();
-        string[] Parameters { get; }
-        string Description { get; }
-        ExtraPortMapping[] GetPortMapping();
-    }
+    void Install();
+    string[] Parameters { get; }
+    string Description { get; }
+    ExtraPortMapping[] GetPortMapping();
 }

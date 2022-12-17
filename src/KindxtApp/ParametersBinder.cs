@@ -1,6 +1,7 @@
 ﻿using System.CommandLine;
 using System.CommandLine.Binding;
 using Kindxt.Charts;
+using Kindxt.Commands;
 using Kindxt.Extensions;
 
 namespace Kindxt

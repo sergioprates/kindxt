@@ -1,8 +1,8 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Kindxt;
+namespace Kindxt.Processes;
 public class ProcessWrapper
 {
     private readonly string _file;
@@ -12,7 +12,7 @@ public class ProcessWrapper
     {
         _file = file;
     }
-    public ProcessWrapper ExecuteCommand(string arguments, string workingDirectory = "", bool ignoreError = false, int timeout = 300000)
+    public virtual ProcessWrapper ExecuteCommand(string arguments, string workingDirectory = "", bool ignoreError = false, int timeout = 300000)
     {
         var process = new Process();
         process.StartInfo.FileName = FindExecutable(_file);
@@ -75,7 +75,6 @@ public class ProcessWrapper
         }
 
         return this;
-
     }
 
     private string FindExecutable(string name) =>

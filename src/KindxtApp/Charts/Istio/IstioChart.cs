@@ -1,5 +1,6 @@
-﻿using Kindxt.Extensions;
+using Kindxt.Extensions;
 using Kindxt.Kind;
+using Kindxt.Processes;
 
 namespace Kindxt.Charts.Istio
 {
@@ -9,7 +10,7 @@ namespace Kindxt.Charts.Istio
         {
             var configDirectory = Path.Combine("Charts", "Istio");
 
-            var kubectl = new ProcessWrapper("kubectl");
+            var kubectl = new KubectlProcess();
             kubectl
                 .ExecuteCommand($"create namespace istio-system", ignoreError: true)
                 .ExecuteCommand($"label namespace istio-system istio-injection=enabled --overwrite",

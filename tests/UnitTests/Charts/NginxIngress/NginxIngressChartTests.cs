@@ -1,19 +1,21 @@
 using FakeItEasy;
 using FluentAssertions;
-using Kindxt.Charts.SqlServer;
+using Kindxt.Charts.NginxIngress;
 using Kindxt.Extensions;
 using Kindxt.Kind;
 using Kindxt.Processes;
 
-namespace UnitTests.Charts.SqlServer
+namespace UnitTests.Charts.NginxIngress
 {
-    public class SqlServerChartTests : TestBase
+    public class NginxIngressChartTests : TestBase
     {
-        private const string ReleaseName = "sqlserver";
+        private const string ReleaseName = "nginx-ingress";
         private const string Namespace = "default";
-        private const string ChartName = "stable/mssql-linux";
-        private const string RepoUrl = "https://charts.helm.sh/stable";
-        private string _pathConfig = Path.Combine("Charts", "SqlServer", "config.yaml");
+        private const string ChartName = "ingress-nginx/ingress-nginx";
+        private const string RepoName = "ingress-nginx";
+        private const string RepoUrl = "https://kubernetes.github.io/ingress-nginx";
+        private string _pathConfig = Path.Combine("Charts", "NginxIngress", "config.yaml");
+
         [SetUp]
         public void SetUp()
         {
@@ -25,26 +27,26 @@ namespace UnitTests.Charts.SqlServer
         [Test]
         public void ParametersShouldBeCorrect()
         {
-            AutoFake.Resolve<SqlServerChart>().Parameters
-                .Should().BeEquivalentTo(new string[] { "--sqlserver", "-sql" });
+            AutoFake.Resolve<NginxIngressChart>().Parameters
+                .Should().BeEquivalentTo(new string[] { "--nginx-ingress", "-nginx" });
         }
         [Test]
         public void DescriptionShouldBeCorrect()
         {
-            AutoFake.Resolve<SqlServerChart>().Description
-                .Should().Be("Install sqlserver chart on kind");
+            AutoFake.Resolve<NginxIngressChart>().Description
+                .Should().Be("Install nginx-ingress chart on kind");
         }
 
         [Test]
         public void GetPortMappingShouldReturnCorrectMap()
         {
-            AutoFake.Resolve<SqlServerChart>().GetPortMapping()
+            AutoFake.Resolve<NginxIngressChart>().GetPortMapping()
                 .Should().BeEquivalentTo(new ExtraPortMapping[]
                 {
                     new()
                     {
-                        ContainerPort = 30000,
-                        HostPort = 1433,
+                        ContainerPort = 30003,
+                        HostPort = 8080,
                         Protocol = "TCP"
                     }
                 });
@@ -53,17 +55,17 @@ namespace UnitTests.Charts.SqlServer
         [Test]
         public void InstallShouldExecuteCommandRepoAdd()
         {
-            AutoFake.Resolve<SqlServerChart>().Install();
+            AutoFake.Resolve<NginxIngressChart>().Install();
 
             A.CallTo(() => AutoFake.Resolve<HelmProcess>().ExecuteCommand(
-                    $"repo add stable {RepoUrl}", A<string>.Ignored,
+                    $"repo add {RepoName} {RepoUrl}", A<string>.Ignored,
                     true, A<int>.Ignored))
                 .MustHaveHappenedOnceExactly();
         }
         [Test]
         public void InstallShouldExecuteCommandRepoUpdate()
         {
-            AutoFake.Resolve<SqlServerChart>().Install();
+            AutoFake.Resolve<NginxIngressChart>().Install();
 
             A.CallTo(() => AutoFake.Resolve<HelmProcess>().ExecuteCommand(
                     "repo update", A<string>.Ignored,
@@ -73,7 +75,7 @@ namespace UnitTests.Charts.SqlServer
         [Test]
         public void InstallShouldExecuteCommandUninstall()
         {
-            AutoFake.Resolve<SqlServerChart>().Install();
+            AutoFake.Resolve<NginxIngressChart>().Install();
 
             A.CallTo(() => AutoFake.Resolve<HelmProcess>().ExecuteCommand(
                     $"uninstall {ReleaseName} -n {Namespace}", A<string>.Ignored,
@@ -83,7 +85,7 @@ namespace UnitTests.Charts.SqlServer
         [Test]
         public void InstallShouldExecuteCommandInstall()
         {
-            AutoFake.Resolve<SqlServerChart>().Install();
+            AutoFake.Resolve<NginxIngressChart>().Install();
 
             A.CallTo(() => AutoFake.Resolve<HelmProcess>().ExecuteCommand(
                     $"install {ReleaseName} {ChartName} -n {Namespace} --wait --debug --timeout=5m -f {_pathConfig}",

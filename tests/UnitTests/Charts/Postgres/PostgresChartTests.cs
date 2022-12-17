@@ -1,19 +1,21 @@
 using FakeItEasy;
 using FluentAssertions;
-using Kindxt.Charts.SqlServer;
+using Kindxt.Charts.Postgres;
 using Kindxt.Extensions;
 using Kindxt.Kind;
 using Kindxt.Processes;
 
-namespace UnitTests.Charts.SqlServer
+namespace UnitTests.Charts.Postgres
 {
-    public class SqlServerChartTests : TestBase
+    public class PostgresChartTests : TestBase
     {
-        private const string ReleaseName = "sqlserver";
+        private const string ReleaseName = "postgres";
         private const string Namespace = "default";
-        private const string ChartName = "stable/mssql-linux";
-        private const string RepoUrl = "https://charts.helm.sh/stable";
-        private string _pathConfig = Path.Combine("Charts", "SqlServer", "config.yaml");
+        private const string ChartName = "bitnami/postgresql";
+        private const string RepoName = "bitnami";
+        private const string RepoUrl = "https://charts.bitnami.com/bitnami";
+        private string _pathConfig = Path.Combine("Charts", "Postgres", "config.yaml");
+
         [SetUp]
         public void SetUp()
         {
@@ -25,26 +27,26 @@ namespace UnitTests.Charts.SqlServer
         [Test]
         public void ParametersShouldBeCorrect()
         {
-            AutoFake.Resolve<SqlServerChart>().Parameters
-                .Should().BeEquivalentTo(new string[] { "--sqlserver", "-sql" });
+            AutoFake.Resolve<PostgresChart>().Parameters
+                .Should().BeEquivalentTo(new string[] { "--postgres", "-pssql" });
         }
         [Test]
         public void DescriptionShouldBeCorrect()
         {
-            AutoFake.Resolve<SqlServerChart>().Description
-                .Should().Be("Install sqlserver chart on kind");
+            AutoFake.Resolve<PostgresChart>().Description
+                .Should().Be("Install postgres chart on kind");
         }
 
         [Test]
         public void GetPortMappingShouldReturnCorrectMap()
         {
-            AutoFake.Resolve<SqlServerChart>().GetPortMapping()
+            AutoFake.Resolve<PostgresChart>().GetPortMapping()
                 .Should().BeEquivalentTo(new ExtraPortMapping[]
                 {
                     new()
                     {
-                        ContainerPort = 30000,
-                        HostPort = 1433,
+                        ContainerPort = 30001,
+                        HostPort = 5432,
                         Protocol = "TCP"
                     }
                 });
@@ -53,17 +55,17 @@ namespace UnitTests.Charts.SqlServer
         [Test]
         public void InstallShouldExecuteCommandRepoAdd()
         {
-            AutoFake.Resolve<SqlServerChart>().Install();
+            AutoFake.Resolve<PostgresChart>().Install();
 
             A.CallTo(() => AutoFake.Resolve<HelmProcess>().ExecuteCommand(
-                    $"repo add stable {RepoUrl}", A<string>.Ignored,
+                    $"repo add {RepoName} {RepoUrl}", A<string>.Ignored,
                     true, A<int>.Ignored))
                 .MustHaveHappenedOnceExactly();
         }
         [Test]
         public void InstallShouldExecuteCommandRepoUpdate()
         {
-            AutoFake.Resolve<SqlServerChart>().Install();
+            AutoFake.Resolve<PostgresChart>().Install();
 
             A.CallTo(() => AutoFake.Resolve<HelmProcess>().ExecuteCommand(
                     "repo update", A<string>.Ignored,
@@ -73,7 +75,7 @@ namespace UnitTests.Charts.SqlServer
         [Test]
         public void InstallShouldExecuteCommandUninstall()
         {
-            AutoFake.Resolve<SqlServerChart>().Install();
+            AutoFake.Resolve<PostgresChart>().Install();
 
             A.CallTo(() => AutoFake.Resolve<HelmProcess>().ExecuteCommand(
                     $"uninstall {ReleaseName} -n {Namespace}", A<string>.Ignored,
@@ -83,7 +85,7 @@ namespace UnitTests.Charts.SqlServer
         [Test]
         public void InstallShouldExecuteCommandInstall()
         {
-            AutoFake.Resolve<SqlServerChart>().Install();
+            AutoFake.Resolve<PostgresChart>().Install();
 
             A.CallTo(() => AutoFake.Resolve<HelmProcess>().ExecuteCommand(
                     $"install {ReleaseName} {ChartName} -n {Namespace} --wait --debug --timeout=5m -f {_pathConfig}",

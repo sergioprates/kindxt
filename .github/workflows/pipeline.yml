@@ -46,7 +46,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Run Tests
-      run: dotnet test
+      run: dotnet test -no-build -l "console;verbosity=detailed" --configuration "Release" /p:CoverletOutputFormat="opencover%2ccobertura" /p:CollectCoverage=true /p:CoverletOutput="${{ runner.temp }}/TestResults/"
     - name: Publish
       run: |
         dotnet publish src/KindxtApp/Kindxt.csproj -c Release --self-contained true /p:PublishSingleFile=true /p:AssemblyVersion="$GitVersion_AssemblySemVer" /p:Version="${{ steps.set_semver.outputs.semVer }}" /p:AssemblyFileVersion="$GitVersion_AssemblySemFileVer"  /p:AssemblyInformationalVersion="$GitVersion_InformationalVersion" -r win-x64 -o publish

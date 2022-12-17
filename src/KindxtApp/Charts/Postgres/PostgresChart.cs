@@ -1,9 +1,12 @@
-﻿using Kindxt.Kind;
+using Kindxt.Kind;
+using Kindxt.Processes;
 
 namespace Kindxt.Charts.Postgres
 {
     public class PostgresChart : HelmChartBase, IHelmChart
     {
+        public PostgresChart(HelmProcess helmProcess) : base(helmProcess)
+        { }
         public void Install()
         {
             var configDirectory = Path.Combine("Charts", "Postgres", "config.yaml");

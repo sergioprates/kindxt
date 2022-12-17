@@ -1,3 +1,4 @@
+using Kindxt.Charts.SqlServer;
 using Kindxt.Kind;
 using Kindxt.Managers;
 using Kindxt.Processes;
@@ -19,11 +20,31 @@ public static class ServiceCollectionExtensions
         .Build());
 
         services.AddSingleton<KindClusterBuilder>();
-        services.AddSingleton<KindProcess>();
 
+
+        services.AddProcesses();
+        services.AddCharts();
+        services.AddManagers();
+
+
+        return services;
+    }
+    public static IServiceCollection AddProcesses(this IServiceCollection services)
+    {
+        services.AddSingleton<KindProcess>();
+        services.AddSingleton<HelmProcess>();
+        return services;
+    }
+
+    public static IServiceCollection AddCharts(this IServiceCollection services)
+    {
+        services.AddSingleton<SqlServerChart>();
+        return services;
+    }
+    public static IServiceCollection AddManagers(this IServiceCollection services)
+    {
         services.AddSingleton<FileManager>();
         services.AddSingleton<HelmChartManager>();
-
         return services;
     }
 }

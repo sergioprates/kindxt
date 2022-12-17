@@ -1,9 +1,12 @@
-﻿using Kindxt.Kind;
+using Kindxt.Kind;
+using Kindxt.Processes;
 
 namespace Kindxt.Charts.Adminer
 {
     public class PgAdminChart : HelmChartBase, IHelmChart
     {
+        public PgAdminChart(HelmProcess helmProcess) : base(helmProcess)
+        { }
         public void Install()
         {
             var configDirectory = Path.Combine("Charts", "PgAdmin", "config.yaml");

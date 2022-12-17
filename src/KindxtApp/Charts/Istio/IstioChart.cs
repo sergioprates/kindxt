@@ -6,6 +6,8 @@ namespace Kindxt.Charts.Istio
 {
     public class IstioChart : HelmChartBase, IHelmChart
     {
+        public IstioChart(HelmProcess helmProcess) : base(helmProcess)
+        { }
         public void Install()
         {
             var configDirectory = Path.Combine("Charts", "Istio");

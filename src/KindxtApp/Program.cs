@@ -6,11 +6,10 @@ using System.CommandLine;
 using System.CommandLine.Builder;
 using System.CommandLine.Parsing;
 
-var kindxtCommand = new KindxtRootCommand();
-
 var services = new ServiceCollection().RegisterDependencies();
-
 var serviceProvider = services.BuildServiceProvider();
+
+var kindxtCommand = new KindxtRootCommand(serviceProvider);
 
 var kindClusterBuilder = serviceProvider.GetRequiredService<KindClusterBuilder>();
 

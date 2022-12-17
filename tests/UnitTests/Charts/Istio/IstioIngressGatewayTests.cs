@@ -1,0 +1,76 @@
+using Autofac.Extras.FakeItEasy;
+using FakeItEasy;
+using Kindxt.Charts.Istio;
+using Kindxt.Extensions;
+using Kindxt.Processes;
+using NUnit.Framework.Internal;
+
+namespace UnitTests.Charts.Istio
+{
+    public class IstioIngressGatewayTests : TestBase
+    {
+        private const string ReleaseName = "istio-ingressgateway";
+        private const string Namespace = "istio-system";
+        private const string ChartName = "istio/gateway";
+        private const string RepoName = "istio";
+        private const string RepoUrl = "https://istio-release.storage.googleapis.com/charts";
+        private string _pathConfig = Path.Combine("Charts", "Istio", "istio-ingress-config.yaml");
+
+        [SetUp]
+        public void SetUp()
+        {
+            AutoFake.Provide(A.Fake<HelmProcess>());
+            AutoFake.Provide(A.Fake<KubectlProcess>());
+
+            A.CallTo(() => AutoFake.Resolve<HelmProcess>().ExecuteCommand(A<string>.Ignored,
+                    A<string>.Ignored, A<bool>.Ignored, A<int>.Ignored))
+                .Returns(AutoFake.Resolve<HelmProcess>());
+
+            A.CallTo(() => AutoFake.Resolve<KubectlProcess>().ExecuteCommand(A<string>.Ignored,
+                    A<string>.Ignored, A<bool>.Ignored, A<int>.Ignored))
+                .Returns(AutoFake.Resolve<KubectlProcess>());
+        }
+
+        [Test]
+        public void InstallShouldExecuteCommandRepoAdd()
+        {
+            AutoFake.Resolve<IstioChart>().Install();
+
+            A.CallTo(() => AutoFake.Resolve<HelmProcess>().ExecuteCommand(
+                    $"repo add {RepoName} {RepoUrl}", A<string>.Ignored,
+                    true, A<int>.Ignored))
+                .MustHaveHappened();
+        }
+        [Test]
+        public void InstallShouldExecuteCommandRepoUpdate()
+        {
+            AutoFake.Resolve<IstioChart>().Install();
+
+            A.CallTo(() => AutoFake.Resolve<HelmProcess>().ExecuteCommand(
+                    "repo update", A<string>.Ignored,
+                    true, A<int>.Ignored))
+                .MustHaveHappened();
+        }
+        [Test]
+        public void InstallShouldExecuteCommandUninstall()
+        {
+            AutoFake.Resolve<IstioChart>().Install();
+
+            A.CallTo(() => AutoFake.Resolve<HelmProcess>().ExecuteCommand(
+                    $"uninstall {ReleaseName} -n {Namespace}", A<string>.Ignored,
+                    true, A<int>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
+        [Test]
+        public void InstallShouldExecuteCommandInstall()
+        {
+            AutoFake.Resolve<IstioChart>().Install();
+
+            A.CallTo(() => AutoFake.Resolve<HelmProcess>().ExecuteCommand(
+                    $"install {ReleaseName} {ChartName} -n {Namespace} --wait --debug --timeout=5m -f {_pathConfig}",
+                    KindxtPath.GetProcessPath(),
+                    false, A<int>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
+    }
+}

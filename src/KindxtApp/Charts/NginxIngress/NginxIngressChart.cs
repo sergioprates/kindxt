@@ -1,9 +1,12 @@
-﻿using Kindxt.Kind;
+using Kindxt.Kind;
+using Kindxt.Processes;
 
 namespace Kindxt.Charts.NginxIngress
 {
     public class NginxIngressChart : HelmChartBase, IHelmChart
     {
+        public NginxIngressChart(HelmProcess helmProcess) : base(helmProcess)
+        { }
         public void Install()
         {
             var configDirectory = Path.Combine("Charts", "NginxIngress", "config.yaml");

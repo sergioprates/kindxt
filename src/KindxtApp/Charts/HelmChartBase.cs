@@ -12,8 +12,8 @@ namespace Kindxt.Charts
             _helmProcess = helmProcess;
         }
         public virtual void InstallFromRepo(string chartName,
-            string repoName, 
-            string repoUrl, 
+            string repoName,
+            string repoUrl,
             string releaseName,
             string? configPath = null,
             string @namespace = "default",

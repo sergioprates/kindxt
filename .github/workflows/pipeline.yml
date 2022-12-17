@@ -44,7 +44,7 @@ jobs:
           echo "::set-output name=semVer::$GitVersion_SemVer"
         fi
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore --configuration "Release"
     - name: Run Tests
       run: dotnet test --no-build -l "console;verbosity=detailed" --configuration "Release" /p:CoverletOutputFormat="opencover%2ccobertura" /p:CollectCoverage=true /p:CoverletOutput="${{ runner.temp }}/TestResults/"
     - name: Publish

@@ -17,12 +17,12 @@ When I was configuring Kind with some applications, I felt some pain to organize
 |  Options | Description | Host Port | NodePort | Username | Password |
 |---|---|---|---|---|---|
 | -c, --create-cluster  | Delete the cluster and create a new one  | - | - | - | - |
-| -sql, --sqlserver  | Install SqlServer chart on Kind | localhost:1433 | 30000 | sa | P@ssword123 |
-| -pssql, --postgres | Install PostgreSQL chart on Kind  | localhost:5432 | 30001 | desenv | P@ssword123 |
-| --citus | Install Citus chart with 2 nodes on Kind, this doesn't work together with PostgreSQL  | localhost:5432 | 30001 | desenv | P@ssword123 |
-| --istio-ingress | Install istio-ingress chart on Kind, this create the namespaces istio-ingress and istio-system | localhost:8081 http, localhost:8082 https, localhost:8083 status-port | 30004, 3005, 3006 | - | - |
-| -pssql-admin, --pg-admin  | Install PgAdmin chart on Kind | http://localhost:9000 | 30002 | desenv@local.com | P@ssword123 |
-| -nginx, --nginx-ingress | Install nginx-ingress chart on Kind | http://localhost:8080 | 30003 | - | - |
+| -sql, --sqlserver  | Install sqlserver chart on kind | localhost:1433 | 30000 | sa | P@ssword123 |
+| -pssql, --postgres | Install postgres chart on kind  | localhost:5432 | 30001 | desenv | P@ssword123 |
+| --citus | Install citus chart with 2 nodes on kind, this doesn't work together with postgresql  | localhost:5432 | 30001 | desenv | P@ssword123 |
+| --istio-ingress | Install istio-ingress chart on kind, this create the namespaces istio-ingress and istio-system | localhost:8081 http, localhost:8082 https, localhost:8083 status-port | 30004, 30005, 30006 | - | - |
+| -pssql-admin, --pg-admin  | Install pgadmin chart on kind | http://localhost:9000 | 30002 | desenv@local.com | P@ssword123 |
+| -nginx, --nginx-ingress | Install nginx-ingress chart on kind | http://localhost:8080 | 30003 | - | - |
 | --version | Show version information | - | - | - | - |
 | -?, -h, --help | Show help and usage information | - | - | - | - |
 

@@ -1,24 +1,28 @@
-﻿using System.CommandLine;
+using System.CommandLine;
 using System.CommandLine.Binding;
 using Kindxt.Charts;
+using Kindxt.Commands;
 using Kindxt.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Kindxt
 {
     public class ParametersBinder : BinderBase<List<string>>
     {
         private readonly KindxtRootCommand _kindxtRootCommand;
+        private readonly IServiceProvider _serviceProvider;
 
-        public ParametersBinder(KindxtRootCommand kindxtRootCommand)
+        public ParametersBinder(KindxtRootCommand kindxtRootCommand, IServiceProvider serviceProvider)
         {
             _kindxtRootCommand = kindxtRootCommand;
+            _serviceProvider = serviceProvider;
             var helmChartsAvailable = TypeExtensions.GetAllTypes<IHelmChart>();
 
             AddBoolOption(new[] { "--create-cluster", "-c" },
                 "Delete the cluster and create a new one");
             foreach (var helmChartAvailable in helmChartsAvailable)
             {
-                var helmChart = (IHelmChart)Activator.CreateInstance(helmChartAvailable)!;
+                var helmChart = (IHelmChart)serviceProvider.GetRequiredService(helmChartAvailable);
                 AddBoolOption(helmChart.Parameters, helmChart.Description);
             }
         }

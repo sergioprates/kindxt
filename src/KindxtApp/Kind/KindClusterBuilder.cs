@@ -1,57 +1,53 @@
-﻿using Kindxt.Charts;
 using Kindxt.Extensions;
-using System.Text;
+using Kindxt.Managers;
+using Kindxt.Processes;
 using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
 
 namespace Kindxt.Kind;
 public class KindClusterBuilder
 {
     private readonly ISerializer _serializerYaml;
+    private readonly KindProcess _kindProcess;
+    private readonly FileManager _fileManager;
+    private readonly HelmChartManager _helmChartManager;
     private readonly KindConfig _kindConfig;
-    private readonly string command = "kind";
 
-    public KindClusterBuilder()
+    private const string KindConfigFileName = "kind-config.yaml";
+
+    public KindClusterBuilder(ISerializer serializer,
+        IDeserializer deserializer,
+        KindProcess kindProcess,
+        FileManager fileManager,
+        HelmChartManager helmChartManager)
     {
-        var deserializerYaml = new DeserializerBuilder()
-            .WithNamingConvention(CamelCaseNamingConvention.Instance)
-            .Build();
-        _serializerYaml = new SerializerBuilder()
-            .WithNamingConvention(CamelCaseNamingConvention.Instance)
-            .Build();
-        _kindConfig = deserializerYaml.Deserialize<KindConfig>(
-            new StreamReader(Path.Combine(KindxtPath.GetProcessPath(), "Kind", "config.yaml")));
+        _serializerYaml = serializer;
+        _kindProcess = kindProcess;
+        _fileManager = fileManager;
+        _helmChartManager = helmChartManager;
+        _kindConfig = deserializer
+            .Deserialize<KindConfig>(_fileManager.GetReader(Path.Combine(KindxtPath.GetProcessPath(), "Kind", "config.yaml")));
     }
 
     public void Build(List<string> parameters)
     {
-        var helmChartsAvailable = TypeExtensions.GetAllTypes<IHelmChart>().Select(type => (IHelmChart)Activator.CreateInstance(type)!);
-
-        var helmChartsToInstall = helmChartsAvailable.Where(helmChart =>
-            helmChart.Parameters.Any(parameters.Contains)).ToList();
+        var helmChartsToInstall = _helmChartManager.GetHelmCharts(parameters);
 
         foreach (var helmChart in helmChartsToInstall)
-        {
-            _kindConfig
-                .GetNode()
-                .ExtraPortMappings
-                .AddRange(helmChart.GetPortMapping());
-        }
+            _kindConfig.AddPortsRange(helmChart.GetPortMapping());
 
-        var kind = new ProcessWrapper(command);
         if (parameters.Any(x => new[] { "--create-cluster", "-c" }.Contains(x)))
         {
-            var kindConfigFileName = "kind-config.yaml";
             var tmpDirectory = Path.Combine(KindxtPath.GetProcessPath(), "tmp", "kind");
 
-            if (!Directory.Exists(tmpDirectory))
-                Directory.CreateDirectory(tmpDirectory);
+            _fileManager.CreateDirectoryIfNotExists(tmpDirectory);
 
             var configText = _serializerYaml.Serialize(_kindConfig);
-            File.WriteAllText(Path.Combine(tmpDirectory, kindConfigFileName), configText, Encoding.UTF8);
-            kind
-            .ExecuteCommand("delete cluster", ignoreError: true)
-            .ExecuteCommand($"create cluster --config={kindConfigFileName} -v 1", tmpDirectory);
+
+            _fileManager.WriteFile(Path.Combine(tmpDirectory, KindConfigFileName), configText);
+
+            _kindProcess
+                .ExecuteCommand("delete cluster", ignoreError: true)
+            .ExecuteCommand($"create cluster --config={KindConfigFileName} -v 1", tmpDirectory);
         }
 
         foreach (var helmChart in helmChartsToInstall)

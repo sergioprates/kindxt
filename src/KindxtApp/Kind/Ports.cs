@@ -1,4 +1,4 @@
-﻿namespace Kindxt.Kind
+namespace Kindxt.Kind
 {
     public static class Ports
     {

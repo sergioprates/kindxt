@@ -1,14 +1,16 @@
-﻿using System.CommandLine;
+using System.CommandLine;
 using System.CommandLine.Invocation;
 using Kindxt.Kind;
 
-namespace Kindxt
+namespace Kindxt.Commands
 {
     public class KindxtRootCommand : RootCommand
     {
-        public KindxtRootCommand()
-            : base("Kindxt is a extension from kind")
-        { }
+        private readonly IServiceProvider _serviceProvider;
+
+        public KindxtRootCommand(IServiceProvider serviceProvider)
+            : base("Kindxt is a extension from kind") =>
+            _serviceProvider = serviceProvider;
 
         public void RegisterHandler(KindClusterBuilder kindClusterBuilder)
         {
@@ -16,7 +18,7 @@ namespace Kindxt
                 ctx) =>
             {
                 kindClusterBuilder.Build(parameters);
-            }, new ParametersBinder(this));
+            }, new ParametersBinder(this, _serviceProvider));
         }
     }
 }

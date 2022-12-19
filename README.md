@@ -12,6 +12,13 @@ When I was configuring Kind with some applications, I felt some pain to organize
 2. Put the executable on PATH environment variable.
 3. Run `kindxt --help` to see all options.
 
+# Tools
+
+* Kubernetes Version: v1.26.0
+* Kind Version: 0.17.0
+* Helm Version: 3.9.1
+* Docker Api Version: 1.41
+
 ## All options accepted
 
 |  Options | Description | Host Port | NodePort | Username | Password |
@@ -19,7 +26,7 @@ When I was configuring Kind with some applications, I felt some pain to organize
 | -c, --create-cluster  | Delete the cluster and create a new one  | - | - | - | - |
 | -sql, --sqlserver  | Install sqlserver chart on kind | localhost:1433 | 30000 | sa | P@ssword123 |
 | -pssql, --postgres | Install postgres chart on kind  | localhost:5432 | 30001 | desenv | P@ssword123 |
-| --citus | Install citus chart with 2 nodes on kind, this doesn't work together with postgresql  | localhost:5432 | 30001 | desenv | P@ssword123 |
+| --citus | Install citus chart with 2 nodes on kind | localhost:5432 | 30007 | desenv | P@ssword123 |
 | --istio-ingress | Install istio-ingress chart on kind, this create the namespaces `istio-ingress` and `istio-system` | localhost:8081 http, localhost:8082 https, localhost:8083 status-port | 30004, 30005, 30006 | - | - |
 | -pssql-admin, --pg-admin  | Install pgadmin chart on kind | http://localhost:9000 | 30002 | desenv@local.com | P@ssword123 |
 | -nginx, --nginx-ingress | Install nginx-ingress chart on kind | http://localhost:8080 | 30003 | - | - |

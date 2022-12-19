@@ -61,5 +61,16 @@ namespace Kindxt.Kind
                 Protocol = _protocol
             },
         };
+        public static ExtraPortMapping[] Citus => new ExtraPortMapping[]
+        {
+            new()
+            {
+                ContainerPort = 30007,
+                HostPort = 5433,
+                Protocol = _protocol
+            }
+        };
+
+        public static ExtraPortMapping[] CertManager => new ExtraPortMapping[] { };
     }
 }

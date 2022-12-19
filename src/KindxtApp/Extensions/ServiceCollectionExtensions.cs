@@ -1,4 +1,5 @@
 using Kindxt.Charts.Adminer;
+using Kindxt.Charts.Citus;
 using Kindxt.Charts.Istio;
 using Kindxt.Charts.NginxIngress;
 using Kindxt.Charts.Postgres;
@@ -46,6 +47,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<NginxIngressChart>();
         services.AddSingleton<PgAdminChart>();
         services.AddSingleton<IstioChart>();
+        services.AddSingleton<CitusChart>();
         return services;
     }
     public static IServiceCollection AddManagers(this IServiceCollection services)

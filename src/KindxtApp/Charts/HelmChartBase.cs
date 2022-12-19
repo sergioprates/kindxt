@@ -20,6 +20,7 @@ namespace Kindxt.Charts
             string parameters = "")
         {
             var configCommand = string.IsNullOrWhiteSpace(configPath) ? "" : $"-f {configPath}";
+            var versionCommand = string.IsNullOrWhiteSpace(parameters) ? "" : parameters;
 
             var versionCommand = string.IsNullOrWhiteSpace(parameters) ? "" : parameters;
 

@@ -1,5 +1,7 @@
 using Kindxt.Charts.Adminer;
+using Kindxt.Charts.Citus;
 using Kindxt.Charts.Istio;
+using Kindxt.Charts.Keda;
 using Kindxt.Charts.NginxIngress;
 using Kindxt.Charts.Postgres;
 using Kindxt.Charts.SqlServer;
@@ -46,6 +48,8 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<NginxIngressChart>();
         services.AddSingleton<PgAdminChart>();
         services.AddSingleton<IstioChart>();
+        services.AddSingleton<KedaChart>();
+        services.AddSingleton<CitusChart>();
         return services;
     }
     public static IServiceCollection AddManagers(this IServiceCollection services)

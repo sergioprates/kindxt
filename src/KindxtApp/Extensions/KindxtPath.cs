@@ -1,7 +1,6 @@
-﻿namespace Kindxt.Extensions
+namespace Kindxt.Extensions;
+
+public static class KindxtPath
 {
-    public static class KindxtPath
-    {
-        public static string GetProcessPath() => Path.GetDirectoryName(Environment.ProcessPath!)!;
-    }
+    public static string GetProcessPath() => Path.GetDirectoryName(Environment.ProcessPath!)!;
 }

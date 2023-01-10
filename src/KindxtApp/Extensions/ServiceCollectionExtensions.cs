@@ -2,6 +2,7 @@ using Kindxt.Charts.Adminer;
 using Kindxt.Charts.Citus;
 using Kindxt.Charts.Istio;
 using Kindxt.Charts.Keda;
+using Kindxt.Charts.MongoDb;
 using Kindxt.Charts.NginxIngress;
 using Kindxt.Charts.Postgres;
 using Kindxt.Charts.SqlServer;
@@ -17,11 +18,11 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection RegisterDependencies(this IServiceCollection services)
     {
-        services.AddSingleton<ISerializer>(new SerializerBuilder()
+        services.AddSingleton(new SerializerBuilder()
         .WithNamingConvention(CamelCaseNamingConvention.Instance)
         .Build());
 
-        services.AddSingleton<IDeserializer>(new DeserializerBuilder()
+        services.AddSingleton(new DeserializerBuilder()
         .WithNamingConvention(CamelCaseNamingConvention.Instance)
         .Build());
 
@@ -44,6 +45,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddCharts(this IServiceCollection services)
     {
         services.AddSingleton<SqlServerChart>();
+        services.AddSingleton<MongoDbChart>();
         services.AddSingleton<PostgresChart>();
         services.AddSingleton<NginxIngressChart>();
         services.AddSingleton<PgAdminChart>();
@@ -52,6 +54,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<CitusChart>();
         return services;
     }
+
     public static IServiceCollection AddManagers(this IServiceCollection services)
     {
         services.AddSingleton<FileManager>();

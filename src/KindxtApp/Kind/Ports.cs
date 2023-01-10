@@ -13,6 +13,7 @@ namespace Kindxt.Kind
                 Protocol = _protocol
             }
         };
+
         public static ExtraPortMapping[] Postgres => new ExtraPortMapping[]
         {
             new()
@@ -22,6 +23,7 @@ namespace Kindxt.Kind
                 Protocol = _protocol
             }
         };
+
         public static ExtraPortMapping[] PgAdmin => new ExtraPortMapping[]
         {
             new ()
@@ -31,6 +33,7 @@ namespace Kindxt.Kind
                 Protocol = _protocol
             }
         };
+
         public static ExtraPortMapping[] NginxIngress => new ExtraPortMapping[]
         {
             new()
@@ -40,6 +43,7 @@ namespace Kindxt.Kind
                 Protocol = _protocol
             }
         };
+
         public static ExtraPortMapping[] Istio => new ExtraPortMapping[]
         {
             new()
@@ -61,12 +65,23 @@ namespace Kindxt.Kind
                 Protocol = _protocol
             },
         };
+
         public static ExtraPortMapping[] Citus => new ExtraPortMapping[]
         {
             new()
             {
                 ContainerPort = 30007,
                 HostPort = 5433,
+                Protocol = _protocol
+            }
+        };
+
+        public static ExtraPortMapping[] MongoDb => new ExtraPortMapping[]
+        {
+            new()
+            {
+                ContainerPort = 30008,
+                HostPort = 27017,
                 Protocol = _protocol
             }
         };

@@ -1,9 +1,8 @@
-﻿namespace Kindxt.Processes
+namespace Kindxt.Processes;
+
+public class HelmProcess : ProcessWrapper
 {
-    public class HelmProcess : ProcessWrapper
-    {
-        public HelmProcess()
-            : base("helm")
-        { }
-    }
+    public HelmProcess()
+        : base("helm")
+    { }
 }

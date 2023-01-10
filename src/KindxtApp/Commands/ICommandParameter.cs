@@ -1,11 +1,10 @@
-﻿using Kindxt.Kind;
+using Kindxt.Kind;
 
-namespace Kindxt.Commands
+namespace Kindxt.Commands;
+
+public interface ICommandParameter
 {
-    public interface ICommandParameter
-    {
-        List<string> Parameters { get; set; }
-        void Execute();
-        ExtraPortMapping GetPortMapping();
-    }
+    List<string> Parameters { get; set; }
+    void Execute();
+    ExtraPortMapping GetPortMapping();
 }

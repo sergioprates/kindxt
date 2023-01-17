@@ -25,6 +25,7 @@ When I was configuring Kind with some applications, I felt some pain to organize
 |---|---|---|---|---|---|
 | -c, --create-cluster  | Delete the cluster and create a new one  | - | - | - | - |
 | --sqlserver  | Install sqlserver chart on kind | localhost:1433 | 30000 | sa | P@ssword123 |
+| --mongodb | Install mongodb chart on kind  | localhost:27017 | 30008 | desenv | P@ssword123 |
 | --postgres | Install postgres chart on kind  | localhost:5432 | 30001 | desenv | P@ssword123 |
 | --citus | Install citus chart with 2 nodes on kind | localhost:5433 | 30007 | desenv | P@ssword123 |
 | --istio-ingress | Install istio-ingress chart on kind, this create the namespaces `istio-ingress` and `istio-system` | localhost:8081 http, localhost:8082 https, localhost:8083 status-port | 30004, 30005, 30006 | - | - |

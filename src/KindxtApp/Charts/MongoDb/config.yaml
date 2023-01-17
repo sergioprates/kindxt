@@ -1,0 +1,12 @@
+global:
+  clusterDomain: cluster.local
+
+service:
+  type: NodePort
+  nodePorts:
+    mongodb: 30008
+
+auth:
+  enabled: true
+  rootUser: desenv
+  rootPassword: "P@ssword123"

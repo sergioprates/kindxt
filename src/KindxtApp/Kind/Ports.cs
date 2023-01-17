@@ -70,6 +70,15 @@ public static class Ports
             Protocol = _protocol
         }
     };
+    public static ExtraPortMapping[] MongoDb => new ExtraPortMapping[]
+        {
+            new()
+            {
+                ContainerPort = 30008,
+                HostPort = 27017,
+                Protocol = _protocol
+            }
+        };
 
     public static ExtraPortMapping[] CertManager => new ExtraPortMapping[] { };
 }

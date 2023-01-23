@@ -1,0 +1,12 @@
+auth:
+  username: desenv
+  password: P@ssword123
+
+service:
+  type: NodePort
+  nodePorts:
+    amqp: 30009
+    manager: 30010
+
+persistence:
+  size: 4Gi

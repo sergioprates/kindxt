@@ -51,6 +51,12 @@ public class RabbitMqChartTests : TestBase
                         ContainerPort = 30009,
                         HostPort = 5672,
                         Protocol = "TCP"
+                    },
+                    new()
+                    {
+                        ContainerPort = 30010,
+                        HostPort = 15672,
+                        Protocol = "TCP"
                     }
             });
     }

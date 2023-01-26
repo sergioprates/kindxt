@@ -3,7 +3,7 @@ auth:
 
 master:
   persistence:
-    size: 4Gi
+    size: 2Gi
   service:
     type: NodePort
     nodePorts:
@@ -12,4 +12,4 @@ master:
 replica:
   replicaCount: 2
   persistence:
-    size: 2Gi
+    size: 1Gi

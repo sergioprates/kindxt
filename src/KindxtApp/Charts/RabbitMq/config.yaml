@@ -9,4 +9,4 @@ service:
     manager: 30010
 
 persistence:
-  size: 4Gi
+  size: 2Gi

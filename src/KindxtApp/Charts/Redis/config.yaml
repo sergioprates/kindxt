@@ -10,6 +10,6 @@ master:
       redis: 30011
 
 replica:
-  replicaCount: 2
+  replicaCount: 1
   persistence:
     size: 1Gi

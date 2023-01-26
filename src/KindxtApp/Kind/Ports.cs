@@ -86,6 +86,22 @@ public static class Ports
         }
     };
 
+    public static ExtraPortMapping[] RabbitMq => new ExtraPortMapping[]
+    {
+        new()
+        {
+            ContainerPort = 30009,
+            HostPort = 5672,
+            Protocol = _protocol
+        },
+        new()
+        {
+            ContainerPort = 30010,
+            HostPort = 15672,
+            Protocol = _protocol
+        }
+    };
+
     public static ExtraPortMapping[] Redis => new ExtraPortMapping[]
     {
         new()

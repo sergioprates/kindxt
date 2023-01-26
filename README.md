@@ -31,7 +31,8 @@ When I was configuring Kind with some applications, I felt some pain to organize
 | --istio-ingress | Install istio-ingress chart on kind, this create the namespaces `istio-ingress` and `istio-system` | localhost:8081 http, localhost:8082 https, localhost:8083 status-port | 30004, 30005, 30006 | - | - |
 | --pg-admin  | Install pgadmin chart on kind | http://localhost:9000 | 30002 | desenv@local.com | P@ssword123 |
 | --nginx-ingress | Install nginx-ingress chart on kind | http://localhost:8080 | 30003 | - | - |
-| --keda | Install Keda chart on kind, this creates the namespace `keda` | - | - | - | - | 
+| --keda | Install Keda chart on kind, this creates the namespace `keda` | - | - | - | - |
+| --rabbitmq | Install RabbitMQ chart on kind | http://localhost:5672 amqp, http://localhost:15672 manager | 30009, 30010 | desenv | P@ssword123 |
 | --version | Show version information | - | - | - | - |
 | -?, -h, --help | Show help and usage information | - | - | - | - |
 

@@ -13,6 +13,7 @@ public static class Ports
             Protocol = _protocol
         }
     };
+
     public static ExtraPortMapping[] Postgres => new ExtraPortMapping[]
     {
         new()
@@ -22,6 +23,7 @@ public static class Ports
             Protocol = _protocol
         }
     };
+
     public static ExtraPortMapping[] PgAdmin => new ExtraPortMapping[]
     {
         new ()
@@ -31,6 +33,7 @@ public static class Ports
             Protocol = _protocol
         }
     };
+
     public static ExtraPortMapping[] NginxIngress => new ExtraPortMapping[]
     {
         new()
@@ -40,6 +43,7 @@ public static class Ports
             Protocol = _protocol
         }
     };
+
     public static ExtraPortMapping[] Istio => new ExtraPortMapping[]
     {
         new()
@@ -61,6 +65,7 @@ public static class Ports
             Protocol = _protocol
         },
     };
+
     public static ExtraPortMapping[] Citus => new ExtraPortMapping[]
     {
         new()
@@ -70,15 +75,32 @@ public static class Ports
             Protocol = _protocol
         }
     };
-    public static ExtraPortMapping[] MongoDb => new ExtraPortMapping[]
-        {
-            new()
-            {
-                ContainerPort = 30008,
-                HostPort = 27017,
-                Protocol = _protocol
-            }
-        };
 
-    public static ExtraPortMapping[] CertManager => new ExtraPortMapping[] { };
+    public static ExtraPortMapping[] MongoDb => new ExtraPortMapping[]
+    {
+        new()
+        {
+            ContainerPort = 30008,
+            HostPort = 27017,
+            Protocol = _protocol
+        }
+    };
+
+    public static ExtraPortMapping[] RabbitMq => new ExtraPortMapping[]
+    {
+        new()
+        {
+            ContainerPort = 30009,
+            HostPort = 5672,
+            Protocol = _protocol
+        },
+        new()
+        {
+            ContainerPort = 30010,
+            HostPort = 15672,
+            Protocol = _protocol
+        }
+    };
+
+    public static ExtraPortMapping[] CertManager => Array.Empty<ExtraPortMapping>();
 }

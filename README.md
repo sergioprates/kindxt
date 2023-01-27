@@ -32,6 +32,7 @@ When I was configuring Kind with some applications, I felt some pain to organize
 | --pg-admin  | Install pgadmin chart on kind | http://localhost:9000 | 30002 | desenv@local.com | P@ssword123 |
 | -nginx, --nginx-ingress | Install nginx-ingress chart on kind | http://localhost:8080 | 30003 | - | - |
 | --keda | Install Keda chart on kind, this creates the namespace `keda` | - | - | - | - |
+| --redis | Install Redis chart on kind | localhost:6379 | 30011 | - | P@ssword123 |
 | --rabbitmq | Install RabbitMQ chart on kind | http://localhost:5672 amqp, http://localhost:15672 manager | 30009, 30010 | desenv | P@ssword123 |
 | --version | Show version information | - | - | - | - |
 | -?, -h, --help | Show help and usage information | - | - | - | - |

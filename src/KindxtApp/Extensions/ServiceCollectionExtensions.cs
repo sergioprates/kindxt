@@ -5,6 +5,7 @@ using Kindxt.Charts.Keda;
 using Kindxt.Charts.MongoDb;
 using Kindxt.Charts.NginxIngress;
 using Kindxt.Charts.Postgres;
+using Kindxt.Charts.Redis;
 using Kindxt.Charts.RabbitMq;
 using Kindxt.Charts.SqlServer;
 using Kindxt.Kind;
@@ -53,6 +54,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IstioChart>();
         services.AddSingleton<KedaChart>();
         services.AddSingleton<CitusChart>();
+        services.AddSingleton<RedisChart>();
         services.AddSingleton<RabbitMqChart>();
         return services;
     }

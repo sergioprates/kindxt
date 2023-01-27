@@ -1,0 +1,15 @@
+auth:
+  password: P@ssword123
+
+master:
+  persistence:
+    size: 2Gi
+  service:
+    type: NodePort
+    nodePorts:
+      redis: 30011
+
+replica:
+  replicaCount: 1
+  persistence:
+    size: 1Gi

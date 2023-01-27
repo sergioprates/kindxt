@@ -102,5 +102,15 @@ public static class Ports
         }
     };
 
+    public static ExtraPortMapping[] Redis => new ExtraPortMapping[]
+    {
+        new()
+        {
+            ContainerPort = 30011,
+            HostPort = 6379,
+            Protocol = _protocol
+        }
+    };
+
     public static ExtraPortMapping[] CertManager => Array.Empty<ExtraPortMapping>();
 }

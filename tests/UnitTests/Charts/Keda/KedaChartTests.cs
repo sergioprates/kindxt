@@ -20,6 +20,7 @@ public class KedaChartTests : TestBase
     public void SetUp()
     {
         AutoFake.Provide(A.Fake<HelmProcess>());
+        AutoFake.Provide(A.Fake<KubectlProcess>());
         A.CallTo(() => AutoFake.Resolve<HelmProcess>().ExecuteCommand(A<string>.Ignored,
                 A<string>.Ignored, A<bool>.Ignored, A<int>.Ignored))
             .Returns(AutoFake.Resolve<HelmProcess>());

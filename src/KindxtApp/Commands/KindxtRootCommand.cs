@@ -1,23 +1,19 @@
 using System.CommandLine;
 using System.CommandLine.Invocation;
 using Kindxt.Kind;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Kindxt.Commands;
 
 public class KindxtRootCommand : RootCommand
 {
-    private readonly IServiceProvider _serviceProvider;
-
     public KindxtRootCommand(IServiceProvider serviceProvider)
-        : base("Kindxt is a extension from kind") =>
-        _serviceProvider = serviceProvider;
-
-    public void RegisterHandler(KindClusterBuilder kindClusterBuilder)
+        : base("Kindxt is a extension from kind")
     {
         this.SetHandler<List<string>, InvocationContext>((parameters,
             ctx) =>
         {
-            kindClusterBuilder.Build(parameters);
-        }, new ParametersBinder(this, _serviceProvider));
+            serviceProvider.GetRequiredService<KindClusterBuilder>().Build(parameters);
+        }, new ParametersBinder(this, serviceProvider));
     }
 }

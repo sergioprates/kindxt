@@ -2,7 +2,7 @@
   "profiles": {
     "KindxtApp": {
       "commandName": "Project",
-      "commandLineArgs": "--create-cluster --citus --pg-admin"
+      "commandLineArgs": "create --kind-image=1.2.3 --set redis.automovel=123 --set keda.fodase.asdad=123"
     }
   }
 }

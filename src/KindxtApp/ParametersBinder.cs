@@ -10,12 +10,11 @@ namespace Kindxt;
 public class ParametersBinder : BinderBase<List<string>>
 {
     private readonly KindxtRootCommand _kindxtRootCommand;
-    private readonly IServiceProvider _serviceProvider;
 
     public ParametersBinder(KindxtRootCommand kindxtRootCommand, IServiceProvider serviceProvider)
     {
         _kindxtRootCommand = kindxtRootCommand;
-        _serviceProvider = serviceProvider;
+
         var helmChartsAvailable = TypeExtensions.GetAllTypes<IHelmChart>();
 
         AddBoolOption(new[] { "--create-cluster", "-c" },

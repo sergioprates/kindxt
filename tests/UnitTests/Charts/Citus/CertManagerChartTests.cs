@@ -1,14 +1,7 @@
 using FakeItEasy;
-using FluentAssertions;
 using Kindxt.Charts.Citus;
 using Kindxt.Extensions;
-using Kindxt.Kind;
 using Kindxt.Processes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UnitTests.Charts.Citus;
 

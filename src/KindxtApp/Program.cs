@@ -1,6 +1,5 @@
 using Kindxt.Commands;
 using Kindxt.Extensions;
-using Kindxt.Kind;
 using Microsoft.Extensions.DependencyInjection;
 using System.CommandLine;
 using System.CommandLine.Builder;
@@ -11,9 +10,7 @@ var serviceProvider = services.BuildServiceProvider();
 
 var kindxtCommand = new KindxtRootCommand(serviceProvider);
 
-var kindClusterBuilder = serviceProvider.GetRequiredService<KindClusterBuilder>();
-
-kindxtCommand.RegisterHandler(kindClusterBuilder);
+kindxtCommand.AddCommand(new CreateClusterCommand(serviceProvider));
 
 if (args.Length == 0)
     args = new string[] { "--help" };

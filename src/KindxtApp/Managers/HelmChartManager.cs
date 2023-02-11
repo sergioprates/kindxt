@@ -12,7 +12,7 @@ public class HelmChartManager
     {
         _serviceProvider = serviceProvider;
     }
-    public virtual List<IHelmChart> GetHelmCharts(List<string> parameters)
+    public virtual List<IHelmChart> GetHelmCharts(IReadOnlyList<string> parameters)
     {
         var helmChartsAvailable = TypeExtensions.GetAllTypes<IHelmChart>().Select(type => (IHelmChart)_serviceProvider.GetRequiredService(type));
 

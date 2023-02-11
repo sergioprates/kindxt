@@ -1,4 +1,5 @@
 using Kindxt.Kind;
+using Microsoft.Extensions.DependencyInjection;
 using System.CommandLine;
 using System.CommandLine.Invocation;
 
@@ -16,6 +17,11 @@ public class CreateClusterCommand : Command
             {
                 Console.WriteLine(parametersChartParameter);
             }
-        }, new CreateClusterBinder(this));
+            foreach (var chartToInstall in parameters.ChartsToInstall)
+            {
+                Console.WriteLine(chartToInstall);
+            }
+            serviceProvider.GetRequiredService<KindClusterBuilder>().Build(parameters.ChartsToInstall);
+        }, new CreateClusterBinder(this, serviceProvider));
     }
 }

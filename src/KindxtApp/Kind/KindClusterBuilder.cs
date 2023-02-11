@@ -28,8 +28,9 @@ public class KindClusterBuilder
             .Deserialize<KindConfig>(_fileManager.GetReader(Path.Combine(KindxtPath.GetProcessPath(), "Kind", "config.yaml")));
     }
 
-    public void Build(List<string> parameters)
+    public void Build(IReadOnlyList<string> parameters)
     {
+        // RECEBER CreateClusterParameters NO MÉTODO BUILD, PENSAR SOBRE SEMPRE RECRIAR O CLUSTER
         var helmChartsToInstall = _helmChartManager.GetHelmCharts(parameters);
 
         foreach (var helmChart in helmChartsToInstall)

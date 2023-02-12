@@ -27,7 +27,7 @@ public abstract class HelmChartBase
             .ExecuteCommand($"repo add {repoName} {repoUrl}", ignoreError: true)
             .ExecuteCommand("repo update", ignoreError: true)
             .ExecuteCommand($"uninstall {releaseName} -n {@namespace}", ignoreError: true)
-            .ExecuteCommand($"install {releaseName} {chartName} -n {@namespace} --wait --debug --timeout=5m {configCommand} {versionCommand}".Trim(),
+            .ExecuteCommandWithWait($"install {releaseName} {chartName} -n {@namespace} --wait --debug --timeout=5m {configCommand} {versionCommand}".Trim(),
                 KindxtPath.GetProcessPath());
     }
 }

@@ -21,55 +21,41 @@ public class KindClusterBuilderTests : TestBase
     }
 
     [Test]
-    public void ShouldntCreateDirectoryIfParameterToCreateClusterIsNotSpecified()
+    public void ShouldCreateDirectory()
     {
-        AutoFake.Resolve<KindClusterBuilder>().Build(new string[] { "--99" }.ToList());
-
-        A.CallTo(() =>
-            AutoFake.Resolve<FileManager>().CreateDirectoryIfNotExists(A<string>.Ignored))
-            .MustNotHaveHappened();
-    }
-
-    [TestCase("--create-cluster")]
-    [TestCase("-c")]
-    public void ShouldCreateDirectoryIfContainsParameterCreateCluster(string parameter)
-    {
-        AutoFake.Resolve<KindClusterBuilder>().Build(new string[] { parameter }.ToList());
+        AutoFake.Resolve<KindClusterBuilder>().Build(new CreateClusterParameters());
 
         A.CallTo(() =>
             AutoFake.Resolve<FileManager>().CreateDirectoryIfNotExists(A<string>.Ignored))
             .MustHaveHappenedOnceExactly();
     }
 
-    [TestCase("--create-cluster")]
-    [TestCase("-c")]
-    public void ShouldWriteFileWhenCreateClusterIsSpecified(string parameter)
+    [Test]
+    public void ShouldWriteFile()
     {
         var configText = "config";
         var tmpDirectory = Path.Combine(KindxtPath.GetProcessPath(), "tmp", "kind");
 
         A.CallTo(() => AutoFake.Resolve<ISerializer>().Serialize(A<object>.Ignored)).Returns(configText);
-        AutoFake.Resolve<KindClusterBuilder>().Build(new string[] { parameter }.ToList());
+        AutoFake.Resolve<KindClusterBuilder>().Build(new CreateClusterParameters());
 
         A.CallTo(() =>
             AutoFake.Resolve<FileManager>().WriteFile(Path.Combine(tmpDirectory, "kind-config.yaml"), configText))
             .MustHaveHappenedOnceExactly();
     }
 
-    [TestCase("--create-cluster")]
-    [TestCase("-c")]
-    public void ShouldExecuteCommandDeleteClusterWhenParameterCreateClusterIsPresent(string parameter)
+    [Test]
+    public void ShouldExecuteCommandDeleteCluster()
     {
-        AutoFake.Resolve<KindClusterBuilder>().Build(new string[] { parameter }.ToList());
+        AutoFake.Resolve<KindClusterBuilder>().Build(new CreateClusterParameters());
 
         A.CallTo(() =>
             AutoFake.Resolve<KindProcess>().ExecuteCommand("delete cluster", "", true, A<int>.Ignored))
             .MustHaveHappenedOnceExactly();
     }
 
-    [TestCase("--create-cluster")]
-    [TestCase("-c")]
-    public void ShouldExecuteCommandCreateCluster(string parameter)
+    [Test]
+    public void ShouldExecuteCommandCreateCluster()
     {
         var tmpDirectory = Path.Combine(KindxtPath.GetProcessPath(), "tmp", "kind");
 
@@ -77,7 +63,7 @@ public class KindClusterBuilderTests : TestBase
                 .ExecuteCommand(A<string>.Ignored, A<string>.Ignored, A<bool>.Ignored, A<int>.Ignored))
                 .Returns(AutoFake.Resolve<KindProcess>());
 
-        AutoFake.Resolve<KindClusterBuilder>().Build(new string[] { parameter }.ToList());
+        AutoFake.Resolve<KindClusterBuilder>().Build(new CreateClusterParameters());
 
         A.CallTo(() =>
             AutoFake.Resolve<KindProcess>()
@@ -104,7 +90,7 @@ public class KindClusterBuilderTests : TestBase
                 AutoFake.Resolve<HelmChartManager>().GetHelmCharts(A<List<string>>.Ignored))
             .Returns(new List<IHelmChart>() { helmChart });
 
-        AutoFake.Resolve<KindClusterBuilder>().Build(new string[] { "123" }.ToList());
+        AutoFake.Resolve<KindClusterBuilder>().Build(new CreateClusterParameters());
 
         A.CallTo(() => kindConfig.AddPortsRange(listPortMapping))
             .MustHaveHappenedOnceExactly();
@@ -124,7 +110,7 @@ public class KindClusterBuilderTests : TestBase
                 AutoFake.Resolve<HelmChartManager>().GetHelmCharts(A<List<string>>.Ignored))
             .Returns(new List<IHelmChart>() { helmChart });
 
-        AutoFake.Resolve<KindClusterBuilder>().Build(new string[] { "123" }.ToList());
+        AutoFake.Resolve<KindClusterBuilder>().Build(new CreateClusterParameters());
 
         A.CallTo(() => helmChart.Install())
             .MustHaveHappenedOnceExactly();

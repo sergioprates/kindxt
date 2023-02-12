@@ -12,16 +12,7 @@ public class CreateClusterCommand : Command
         this.SetHandler<CreateClusterParameters, InvocationContext>((parameters,
             ctx) =>
         {
-            Console.WriteLine($"kubeversion: {parameters.KindImage}");
-            foreach (var parametersChartParameter in parameters.ChartParameters)
-            {
-                Console.WriteLine(parametersChartParameter);
-            }
-            foreach (var chartToInstall in parameters.ChartsToInstall)
-            {
-                Console.WriteLine(chartToInstall);
-            }
-            serviceProvider.GetRequiredService<KindClusterBuilder>().Build(parameters.ChartsToInstall);
+            serviceProvider.GetRequiredService<KindClusterBuilder>().Build(parameters);
         }, new CreateClusterBinder(this, serviceProvider));
     }
 }

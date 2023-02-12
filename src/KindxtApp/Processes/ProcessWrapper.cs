@@ -12,7 +12,34 @@ public class ProcessWrapper
     {
         _file = file;
     }
-    public virtual ProcessWrapper ExecuteCommand(string arguments, string workingDirectory = "", bool ignoreError = false, int timeout = 300000)
+
+    public ProcessWrapper ExecuteCommand(string arguments, string workingDirectory = "", bool ignoreError = false, int timeout = 300000)
+    {
+        var processStartInfo = new ProcessStartInfo
+        {
+            FileName = FindExecutable(_file),
+            Arguments = arguments,
+            UseShellExecute = false,
+            WorkingDirectory = workingDirectory,
+            WindowStyle = ProcessWindowStyle.Hidden,
+            RedirectStandardOutput = true
+        };
+
+        var process = Process.Start(processStartInfo);
+
+        if (process == null)
+            throw new Exception($"The process failed to start: {_file} {arguments}");
+
+        process.WaitForExit();
+        _process = process;
+
+        if (process.ExitCode != 0 && ignoreError == false)
+            throw new Exception($"The process failed to start: {_file} {arguments}");
+
+        return this;
+
+    }
+    public virtual ProcessWrapper ExecuteCommandWithWait(string arguments, string workingDirectory = "", bool ignoreError = false, int timeout = 300000)
     {
         var process = new Process();
         process.StartInfo.FileName = FindExecutable(_file);
@@ -23,8 +50,6 @@ public class ProcessWrapper
         process.StartInfo.WorkingDirectory = workingDirectory;
         process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
-        StringBuilder output = new StringBuilder();
-        StringBuilder error = new StringBuilder();
 
         using (AutoResetEvent outputWaitHandle = new AutoResetEvent(false))
         using (AutoResetEvent errorWaitHandle = new AutoResetEvent(false))
@@ -38,7 +63,6 @@ public class ProcessWrapper
                 else
                 {
                     Console.WriteLine(e.Data);
-                    output.AppendLine(e.Data);
                 }
             };
             process.ErrorDataReceived += (sender, e) =>
@@ -50,7 +74,6 @@ public class ProcessWrapper
                 else
                 {
                     Console.WriteLine(e.Data);
-                    error.AppendLine(e.Data);
                 }
             };
 

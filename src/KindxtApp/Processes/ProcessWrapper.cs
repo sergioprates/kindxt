@@ -13,7 +13,7 @@ public class ProcessWrapper
         _file = file;
     }
 
-    public ProcessWrapper ExecuteCommand(string arguments, string workingDirectory = "", bool ignoreError = false, int timeout = 300000)
+    public virtual ProcessWrapper ExecuteCommand(string arguments, string workingDirectory = "", bool ignoreError = false, int timeout = 300000)
     {
         var processStartInfo = new ProcessStartInfo
         {
@@ -37,7 +37,6 @@ public class ProcessWrapper
             throw new Exception($"The process failed to start: {_file} {arguments}");
 
         return this;
-
     }
     public virtual ProcessWrapper ExecuteCommandWithWait(string arguments, string workingDirectory = "", bool ignoreError = false, int timeout = 300000)
     {

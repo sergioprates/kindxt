@@ -51,7 +51,7 @@ internal class CertManagerChartTests : TestBase
     {
         AutoFake.Resolve<CitusChart>().Install();
 
-        A.CallTo(() => AutoFake.Resolve<HelmProcess>().ExecuteCommand(
+        A.CallTo(() => AutoFake.Resolve<HelmProcess>().ExecuteCommandWithWait(
                 $"install {ReleaseName} {ChartName} -n {Namespace} --wait --debug --timeout=5m  --version v1.5.4 --set installCRDs=true",
                 KindxtPath.GetProcessPath(),
                 false, A<int>.Ignored))

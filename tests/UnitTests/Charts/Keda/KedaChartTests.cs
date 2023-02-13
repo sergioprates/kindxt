@@ -85,7 +85,7 @@ public class KedaChartTests : TestBase
     {
         AutoFake.Resolve<KedaChart>().Install();
 
-        A.CallTo(() => AutoFake.Resolve<HelmProcess>().ExecuteCommand(
+        A.CallTo(() => AutoFake.Resolve<HelmProcess>().ExecuteCommandWithWait(
                 $"install {ReleaseName} {ChartName} -n {Namespace} --wait --debug --timeout=5m",
                 KindxtPath.GetProcessPath(),
                 false, A<int>.Ignored))

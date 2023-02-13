@@ -1,6 +1,8 @@
 global:
   clusterDomain: cluster.local
 
+replicaCount: 2
+
 service:
   type: NodePort
   nodePorts:

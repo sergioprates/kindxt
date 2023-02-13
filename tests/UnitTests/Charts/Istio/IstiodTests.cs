@@ -64,7 +64,7 @@ public class IstiodTests : TestBase
     {
         AutoFake.Resolve<IstioChart>().Install();
 
-        A.CallTo(() => AutoFake.Resolve<HelmProcess>().ExecuteCommand(
+        A.CallTo(() => AutoFake.Resolve<HelmProcess>().ExecuteCommandWithWait(
                 $"install {ReleaseName} {ChartName} -n {Namespace} --wait --debug --timeout=5m -f {_pathConfig}",
                 KindxtPath.GetProcessPath(),
                 false, A<int>.Ignored))
